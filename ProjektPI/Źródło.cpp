@@ -7,6 +7,7 @@ int main()
 {
 	cout << "Hello world!";
 	cout << "witam!";
-	cout << "Witaj œwiat!";
+	cout << "Witaj świat!";
 	cout << "hej";
+	cout << "zmiana";
 }
