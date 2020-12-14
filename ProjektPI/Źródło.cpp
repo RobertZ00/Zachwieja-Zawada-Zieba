@@ -3,8 +3,9 @@
 
 using namespace std;
 
-int main() 
+int main()
 {
 	cout << "Hello world!";
-	cout << "Witaj œwiat!";
+	cout << "Witaj Å“wiat!";
+	cout << "hej";
 }
