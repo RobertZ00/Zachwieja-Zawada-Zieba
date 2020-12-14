@@ -6,6 +6,7 @@ using namespace std;
 int main()
 {
 	cout << "Hello world!";
+	cout << "witam!";
 	cout << "Witaj œwiat!";
 	cout << "hej";
 }
