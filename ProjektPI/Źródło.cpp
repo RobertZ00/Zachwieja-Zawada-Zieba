@@ -16,13 +16,10 @@ int main()
 		{
 			if (windowEvent.type == sf::Event::Closed)
 			{
-				window.close(); //komentarz RObert Pala hej hej
+				window.close();
 			}
 		}
 		window.clear(sf::Color::White);
 		window.display();
 	}
 }
-//komentarz main sprawdzenie 1 2 3
-//komentarz 2
-//kom3
