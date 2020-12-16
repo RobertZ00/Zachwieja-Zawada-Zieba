@@ -23,3 +23,6 @@ int main()
 		window.display();
 	}
 }
+//komentarz main sprawdzenie 1 2 3
+//komentarz 2
+//kom3
