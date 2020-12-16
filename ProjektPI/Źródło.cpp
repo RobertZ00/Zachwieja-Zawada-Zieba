@@ -16,7 +16,7 @@ int main()
 		{
 			if (windowEvent.type == sf::Event::Closed)
 			{
-				window.close();
+				window.close(); //komentarz
 			}
 		}
 		window.clear(sf::Color::White);
