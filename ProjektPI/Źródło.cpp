@@ -61,7 +61,7 @@ int score(sf::RenderWindow &window, fstream& scores)
 int menu(sf::RenderWindow &window,fstream &scores)
 {
 	//utworzenie obiektu klasy MENU (w nawiasach s¹ podane wartoœci dla konstruktora klasy)
-	Menu menu(window.getSize().x, window.getSize().y);
+	Menu menu(window.getSize().x, window.getSize().y);//zamiast podawaæ sta³¹ wartoœæ lepiej podaæ wzglêdn¹ poniewa¿ teraz wystarczy zmieniæ rozmiary okna w jednym miejscu i wszystko siê dostosuje
 	while (window.isOpen())
 	{
 		//Obs³uga zdarzeñ takich jak zamkniêcie gry, lub naciœniêcie klawisza
