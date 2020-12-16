@@ -10,37 +10,48 @@ using namespace std;
 
 int score(sf::RenderWindow &window, fstream& scores)
 {
+	//otwarcie pliku score.txt z opcj¹ odczytu
 	scores.open("score.txt", ios::in);
 	if (scores.good())
 	{
 		string out;
 		string linia;
+		//utworzenie zmiennej typu text 
 		sf::Font font;
+		//za³adowanie czcionki z pliku, SFML nie posiada bazowej czcionki
 		font.loadFromFile("./fonts/Texturina-VariableFont_opsz,wght.ttf");
 		sf::Text score;
 		score.setFont(font);
 		score.setFillColor(sf::Color::Black);
+		//zapisanie ca³ego pliku do zmiennej linia
 		for (int i = 0; i < 10; i++)
 		{
 			getline(scores, out);
 			linia += out + "\n";
 		}
+		//utworzenie obiektu klasy scorescreen
 		scorescreen scoresc(window.getSize().x,window.getSize().y,linia);
+		//pêtla wyœwietlaj¹ca ekran z najlepszymi wynikami
 		while (window.isOpen())
 		{
+			//obs³uga eventow
 			sf::Event windowEvent;
 			while (window.pollEvent(windowEvent))
 			{
+				//wyjœcie z gry ESC i zamkniêcie okna
 				if (windowEvent.type == sf::Event::Closed || (windowEvent.type == sf::Event::KeyPressed && windowEvent.key.code == sf::Keyboard::Escape))
 				{
 					window.close();
 				}
+				//obs³uga entera (wyjœcie z tabeli wyników)
 				if (windowEvent.type == sf::Event::KeyPressed && windowEvent.key.code == sf::Keyboard::Enter)
 				{
 					return 0;
 				}
 			}
+			//wyœwietlanie 
 			window.clear(sf::Color::White);
+			//odwo³anie siê do w³aœciwoœci klasy scoresc(definicja w³aœciwoœci tej klasy w oddzielnym pliku)
 			scoresc.draw(window);
 			window.display();
 		}
@@ -49,51 +60,63 @@ int score(sf::RenderWindow &window, fstream& scores)
 
 int menu(sf::RenderWindow &window,fstream &scores)
 {
+	//utworzenie obiektu klasy MENU (w nawiasach s¹ podane wartoœci dla konstruktora klasy)
 	Menu menu(window.getSize().x, window.getSize().y);
 	while (window.isOpen())
 	{
+		//Obs³uga zdarzeñ takich jak zamkniêcie gry, lub naciœniêcie klawisza
 		sf::Event windowEvent;
 		while (window.pollEvent(windowEvent))
 		{
+			//obs³uga wyjœcia z gry przez zamkniêcie okna lub naciœniêcie ESC
 			if(windowEvent.type == sf::Event::Closed || (windowEvent.type == sf::Event::KeyPressed && windowEvent.key.code == sf::Keyboard::Escape))
 			{
 				window.close();
 			}
+			//obs³uga przejœcia w górê przy u¿yciu klawisza W
 			if (windowEvent.type == sf::Event::KeyPressed && windowEvent.key.code == sf::Keyboard::W)
 			{
 				menu.MoveUp();
 			}
+			//obs³uga przejœcia w dó³ przy u¿yciu klawisza S
 			if (windowEvent.type == sf::Event::KeyPressed && windowEvent.key.code == sf::Keyboard::S)
 			{
 				menu.MoveDown();
 			}
+			//Akceptacja wyboru na którym jest obecnie u¿ytkownik
 			if (windowEvent.type == sf::Event::KeyPressed && windowEvent.key.code == sf::Keyboard::Enter)
 			{
 				switch (menu.getPressedItem())
 				{
-				case 0:
+				case 0: // START
 					return 0;
 					break;
-				case 1:
+				case 1: // BEST SCORE
 					score(window,scores);
 					break;
-				case 2:
+				case 2: // EXIT
 					window.close();
 				}
 				break;
 			}
 		}
+		//Wyœwietlanie rzeczy na ekran (na ekranie wyœwietlane s¹ jedynie elementy znajduj¹ce siê pomiêdzy clear i display)
 		window.clear(sf::Color::White);
-		menu.draw(window);
+		//odwo³anie siê do w³aœciwoœci klasy menu (definicja klasy i w³aœciwoœci w oddzielnym pliku)
+		menu.draw(window); 
 		window.display();
 	}
 }
 
 int main()
 {
+	//Utworzenie okna gry
 	sf::RenderWindow window{ sf::VideoMode(800, 600, 32), "Dinozaur" };
+	//utworzenie zmiennej do otwierania plików tekstowych?xD(nw jak to siê nazywa profesjonalnie)
 	fstream scores;
+	//uruchomienie funkcji menu wyœwietlaj¹cej menu gry
 	menu(window,scores);
+	//g³ówna pêtla programu
 	while (window.isOpen())
 	{
 		sf::Event windowEvent;
