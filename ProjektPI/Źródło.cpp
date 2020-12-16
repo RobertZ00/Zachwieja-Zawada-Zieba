@@ -39,12 +39,12 @@ int score(sf::RenderWindow &window, fstream& scores)
 			while (window.pollEvent(windowEvent))
 			{
 				//wyjœcie z gry ESC i zamkniêcie okna
-				if (windowEvent.type == sf::Event::Closed || (windowEvent.type == sf::Event::KeyPressed && windowEvent.key.code == sf::Keyboard::Escape))
+				if (windowEvent.type == sf::Event::Closed || sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
 				{
 					window.close();
 				}
 				//obs³uga entera (wyjœcie z tabeli wyników)
-				if (windowEvent.type == sf::Event::KeyPressed && windowEvent.key.code == sf::Keyboard::Enter)
+				if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter))
 				{
 					return 0;
 				}
@@ -69,7 +69,7 @@ int menu(sf::RenderWindow &window,fstream &scores)
 		while (window.pollEvent(windowEvent))
 		{
 			//obs³uga wyjœcia z gry przez zamkniêcie okna lub naciœniêcie ESC
-			if(windowEvent.type == sf::Event::Closed || (windowEvent.type == sf::Event::KeyPressed && windowEvent.key.code == sf::Keyboard::Escape))
+			if(windowEvent.type == sf::Event::Closed || sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
 			{
 				window.close();
 			}
@@ -84,7 +84,7 @@ int menu(sf::RenderWindow &window,fstream &scores)
 				menu.MoveDown();
 			}
 			//Akceptacja wyboru na którym jest obecnie u¿ytkownik
-			if (windowEvent.type == sf::Event::KeyPressed && windowEvent.key.code == sf::Keyboard::Enter)
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter))
 			{
 				switch (menu.getPressedItem())
 				{
@@ -124,9 +124,20 @@ int main()
 
 	dino.setTextureRect({ 0,0,55,60 });
 
+	sf::Clock t0;
+	int animation = 0;
 	//g³ówna pêtla programu
 	while (window.isOpen())
 	{
+		//animacja biegn¹cego dinozaura
+		if (t0.getElapsedTime().asSeconds() >= 0.1f)
+		{
+			dino.setTextureRect({ 55*animation,0,55,60 });
+			animation++;
+			t0.restart();
+			if (animation == 4)	
+				animation = 0;
+		}
 		sf::Event windowEvent;
 		while (window.pollEvent(windowEvent))
 		{
@@ -134,7 +145,7 @@ int main()
 			{
 				window.close();
 			}
-			if (windowEvent.type == sf::Event::KeyPressed && windowEvent.key.code == sf::Keyboard::Escape)
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
 			{
 				window.close();
 			}
