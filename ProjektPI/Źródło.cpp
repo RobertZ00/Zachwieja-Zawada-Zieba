@@ -24,3 +24,4 @@ int main()
 	}
 }
 //komentarz main sprawdzenie 1 2 3
+//komentarz 2
