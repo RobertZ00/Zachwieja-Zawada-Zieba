@@ -88,13 +88,13 @@ int menu(sf::RenderWindow &window,fstream &scores)
 			{
 				switch (menu.getPressedItem())
 				{
-				case 0: // START
+				case 0: // START - wraca do main
 					return 0;
 					break;
-				case 1: // BEST SCORE
+				case 1: // BEST SCORE - wywo³anie funkcji score
 					score(window,scores);
 					break;
-				case 2: // EXIT
+				case 2: // EXIT - zamkniêcie gry
 					window.close();
 				}
 				break;
@@ -116,6 +116,14 @@ int main()
 	fstream scores;
 	//uruchomienie funkcji menu wyœwietlaj¹cej menu gry
 	menu(window,scores);
+	//utworzenie sprite dinozaura oraz utworzenie teksturyi za³adowanie jej z pliku (³adowanie tekstury z obs³ug¹ b³êdu)
+	sf::Texture dino_texture;
+	if (!dino_texture.loadFromFile("./textures/almighty_dragon.png"))
+		return EXIT_FAILURE;
+	sf::Sprite dino(dino_texture);
+
+	dino.setTextureRect({ 0,0,55,60 });
+
 	//g³ówna pêtla programu
 	while (window.isOpen())
 	{
@@ -132,7 +140,7 @@ int main()
 			}
 		}
 		window.clear(sf::Color::White);
-
+		window.draw(dino);
 		window.display();
 	}
 }
