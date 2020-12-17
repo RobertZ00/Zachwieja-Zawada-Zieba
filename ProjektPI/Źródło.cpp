@@ -52,6 +52,7 @@ int score(sf::RenderWindow& window, fstream& scores,Menu& menu)
 		}
 	}
 }
+//
 
 int menu(sf::RenderWindow &window,fstream &scores)
 {
