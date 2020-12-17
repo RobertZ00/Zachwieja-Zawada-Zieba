@@ -8,21 +8,16 @@
 
 using namespace std;
 
-int score(sf::RenderWindow &window, fstream& scores)
+int score(sf::RenderWindow& window, fstream& scores)
 {
+	cout << "dziala";
 	//otwarcie pliku score.txt z opcj¹ odczytu
 	scores.open("score.txt", ios::in);
 	if (scores.good())
 	{
+		cout << "dzia³a";
 		string out;
 		string linia;
-		//utworzenie zmiennej typu text 
-		sf::Font font;
-		//za³adowanie czcionki z pliku, SFML nie posiada bazowej czcionki
-		font.loadFromFile("./fonts/Texturina-VariableFont_opsz,wght.ttf");
-		sf::Text score;
-		score.setFont(font);
-		score.setFillColor(sf::Color::Black);
 		//zapisanie ca³ego pliku do zmiennej linia
 		for (int i = 0; i < 10; i++)
 		{
@@ -34,6 +29,7 @@ int score(sf::RenderWindow &window, fstream& scores)
 		//pêtla wyœwietlaj¹ca ekran z najlepszymi wynikami
 		while (window.isOpen())
 		{
+
 			//obs³uga eventow
 			sf::Event windowEvent;
 			while (window.pollEvent(windowEvent))
@@ -44,8 +40,9 @@ int score(sf::RenderWindow &window, fstream& scores)
 					window.close();
 				}
 				//obs³uga entera (wyjœcie z tabeli wyników)
-				if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter))
+				if (windowEvent.type == sf::Event::KeyPressed && windowEvent.key.code == sf::Keyboard::Enter)
 				{
+					scores.close();
 					return 0;
 				}
 			}
@@ -135,9 +132,10 @@ int main()
 			dino.setTextureRect({ 55*animation,0,55,60 });
 			animation++;
 			t0.restart();
-			if (animation == 4)	
+			if (animation == 4)
 				animation = 0;
 		}
+		//obs³uga eventów
 		sf::Event windowEvent;
 		while (window.pollEvent(windowEvent))
 		{
