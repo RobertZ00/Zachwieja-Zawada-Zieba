@@ -8,14 +8,12 @@
 
 using namespace std;
 
-int score(sf::RenderWindow& window, fstream& scores)
+int score(sf::RenderWindow& window, fstream& scores,Menu& menu)
 {
-	cout << "dziala";
 	//otwarcie pliku score.txt z opcj¹ odczytu
 	scores.open("score.txt", ios::in);
 	if (scores.good())
 	{
-		cout << "dzia³a";
 		string out;
 		string linia;
 		//zapisanie ca³ego pliku do zmiennej linia
@@ -29,7 +27,7 @@ int score(sf::RenderWindow& window, fstream& scores)
 		//pêtla wyœwietlaj¹ca ekran z najlepszymi wynikami
 		while (window.isOpen())
 		{
-
+			menu.MoveUp();
 			//obs³uga eventow
 			sf::Event windowEvent;
 			while (window.pollEvent(windowEvent))
@@ -40,7 +38,7 @@ int score(sf::RenderWindow& window, fstream& scores)
 					window.close();
 				}
 				//obs³uga entera (wyjœcie z tabeli wyników)
-				if (windowEvent.type == sf::Event::KeyPressed && windowEvent.key.code == sf::Keyboard::Enter)
+				if (windowEvent.type == sf::Event::KeyReleased && windowEvent.key.code == sf::Keyboard::Enter)
 				{
 					scores.close();
 					return 0;
@@ -81,7 +79,7 @@ int menu(sf::RenderWindow &window,fstream &scores)
 				menu.MoveDown();
 			}
 			//Akceptacja wyboru na którym jest obecnie u¿ytkownik
-			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter))
+			if (windowEvent.type == sf::Event::KeyReleased && windowEvent.key.code == sf::Keyboard::Enter)
 			{
 				switch (menu.getPressedItem())
 				{
@@ -89,7 +87,7 @@ int menu(sf::RenderWindow &window,fstream &scores)
 					return 0;
 					break;
 				case 1: // BEST SCORE - wywo³anie funkcji score
-					score(window,scores);
+					score(window,scores,menu);
 					break;
 				case 2: // EXIT - zamkniêcie gry
 					window.close();

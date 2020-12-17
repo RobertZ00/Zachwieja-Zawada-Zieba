@@ -11,9 +11,8 @@ public:
 	void MoveUp();
 	void MoveDown();
 	int getPressedItem() { return selectedItemIndex; }
-
-private:
 	int selectedItemIndex;
+private:
 	sf::Font font;
 	sf::Text menu[MAX_NUMBER_ITEMS];
 };
