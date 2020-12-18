@@ -139,7 +139,7 @@ int main()
 	{
 		//animacja biegn¹cego dinozaura oraz zmiana t³a gry
 		if (t0.getElapsedTime().asSeconds() >= 0.1f)
-		{
+		{//
 			dino.setTextureRect({ 55*animation,0,55,60 });
 			(animation % 2) ? backgroundSprite.setTexture(backgroundtxt2) : backgroundSprite.setTexture(backgroundtxt1);
 			animation++;
