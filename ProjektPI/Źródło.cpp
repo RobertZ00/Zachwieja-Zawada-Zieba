@@ -104,6 +104,11 @@ int menu(sf::RenderWindow &window,fstream &scores)
 	}
 }
 
+int jump(sf::Sprite &dino)
+{
+	return 0;
+}
+
 int main()
 {
 	//Utworzenie okna gry
@@ -112,23 +117,31 @@ int main()
 	fstream scores;
 	//uruchomienie funkcji menu wyœwietlaj¹cej menu gry
 	menu(window,scores);
-	//utworzenie sprite dinozaura oraz utworzenie teksturyi za³adowanie jej z pliku (³adowanie tekstury z obs³ug¹ b³êdu)
+	//utworzenie sprite dinozaura oraz utworzenie tekstury i za³adowanie jej z pliku (³adowanie tekstury z obs³ug¹ b³êdu)
 	sf::Texture dino_texture;
 	if (!dino_texture.loadFromFile("./textures/almighty_dragon.png"))
 		return EXIT_FAILURE;
 	sf::Sprite dino(dino_texture);
-
 	dino.setTextureRect({ 0,0,55,60 });
-
+	dino.setPosition(window.getSize().x / 10, 441);
+	//t³o gry
+	sf::Texture backgroundtxt1;
+	backgroundtxt1.loadFromFile("./textures/background1.jpg");
+	sf::Texture backgroundtxt2;
+	backgroundtxt2.loadFromFile("./textures/background2.jpg");
+	sf::Sprite backgroundSprite(backgroundtxt1);
+	//zegar animacji
 	sf::Clock t0;
+	//iterator animacji
 	int animation = 0;
 	//g³ówna pêtla programu
 	while (window.isOpen())
 	{
-		//animacja biegn¹cego dinozaura
+		//animacja biegn¹cego dinozaura oraz zmiana t³a gry
 		if (t0.getElapsedTime().asSeconds() >= 0.1f)
 		{
 			dino.setTextureRect({ 55*animation,0,55,60 });
+			(animation % 2) ? backgroundSprite.setTexture(backgroundtxt2) : backgroundSprite.setTexture(backgroundtxt1);
 			animation++;
 			t0.restart();
 			if (animation == 4)
@@ -148,6 +161,7 @@ int main()
 			}
 		}
 		window.clear(sf::Color::White);
+		window.draw(backgroundSprite);
 		window.draw(dino);
 		window.display();
 	}
