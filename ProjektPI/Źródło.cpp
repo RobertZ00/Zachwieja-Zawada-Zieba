@@ -70,12 +70,12 @@ int menu(sf::RenderWindow &window,fstream &scores)
 				window.close();
 			}
 			//obs³uga przejœcia w górê przy u¿yciu klawisza W
-			if (windowEvent.type == sf::Event::KeyPressed && windowEvent.key.code == sf::Keyboard::W)
+			if (windowEvent.type == sf::Event::KeyPressed && (windowEvent.key.code == sf::Keyboard::Up || windowEvent.key.code == sf::Keyboard::W))
 			{
 				menu.MoveUp();
 			}
 			//obs³uga przejœcia w dó³ przy u¿yciu klawisza S
-			if (windowEvent.type == sf::Event::KeyPressed && windowEvent.key.code == sf::Keyboard::S)
+			if (windowEvent.type == sf::Event::KeyPressed && (windowEvent.key.code == sf::Keyboard::Down || windowEvent.key.code == sf::Keyboard::S))
 			{
 				menu.MoveDown();
 			}
