@@ -6,7 +6,7 @@
 #include <time.h>
 #include "menu.h"
 #include "scorescreen.h"
-//dzien dobry tu pawel sedfdrfc
+
 using namespace std;
 
 //Klasa do tworzenia przeszkód na mapie
