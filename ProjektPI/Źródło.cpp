@@ -223,6 +223,7 @@ int main()
 				window.close();
 			}
 		}
+		//
 		bush.move(0.25,dino);
 		bush2.move(0.25, dino);
 		bush3.move(0.25, dino);
