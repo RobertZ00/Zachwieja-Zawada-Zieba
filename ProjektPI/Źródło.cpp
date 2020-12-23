@@ -7,6 +7,17 @@
 #include "menu.h"
 #include "scorescreen.h"
 
+
+//uzyte przy skakaniu, nie wiem czemu ale tylko jako globalne dzialalo
+bool is_jump = false;
+bool on_ground = true;
+
+//uzyte przy skakaniu
+struct Position
+{
+	double x;
+	double y;
+};
 using namespace std;
 
 //Klasa do tworzenia przeszkód na mapie
@@ -145,10 +156,58 @@ int menu(sf::RenderWindow &window,fstream &scores)
 	}
 }
 
-int jump(sf::Sprite &dino)
+int jump(sf::Sprite &dino, Position dino_pos)
 {
+	//predkosc opadania i wznoszenia
+	double gravity = 0.3;
+
+	//sprawdzenie, czy skok jest mozliwy oraz: skok prawda, dino na ziemi falsz
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && on_ground && !is_jump)
+	{
+		is_jump = true;
+		on_ground = false;
+	}
+
+	//jesli prawda, ze skok to dino porusza sie do gory
+	if (is_jump)
+	{
+		dino_pos.y -= gravity;
+		dino.setPosition(dino_pos.x, dino_pos.y);
+	}
+
+	//poruszanie sie w dol w innych przypadkach niz prawda ze skok
+	else
+	{
+		dino_pos.y += gravity;
+		dino.setPosition(dino_pos.x, dino_pos.y);
+	}
+
+	//jesli dino jest na poziomie lub nizej niz podloze to prawda,
+	//ze dino jest na podlozu i ustawienie tej pozycji na sztywno
+	//inaczej caly czas leci w dol
+	if (dino.getPosition().y >= 441)
+	{
+		dino.setPosition(dino_pos.x, 441);
+		on_ground = true;
+	}
+	
+	//limity wysokosci dla skoku
+	if (dino.getPosition().y < 441)
+	{
+		on_ground = false;
+	}
+
+	if (dino.getPosition().y <= 300)
+	{
+		is_jump = false;
+	}
+
+	//std::cout << dino.getPosition().y << " " << is_jump << " " << on_ground << std::endl;
+
 	return 0;
 }
+
+
 
 int main()
 {
@@ -197,6 +256,8 @@ int main()
 	obstacle bush2(bushtxt, 800);
 	obstacle bush3(bushtxt, 650);
 
+
+
 	//g³ówna pêtla programu
 	while (window.isOpen())
 	{
@@ -223,6 +284,15 @@ int main()
 				window.close();
 			}
 		}
+
+		//uzywane do funkcji skoku, niezbyt wiem jak to dziala
+		Position dino_pos;
+		dino_pos.y = dino.getPosition().y;
+		dino_pos.x = dino.getPosition().x;
+
+		//skakanie
+		jump(dino, dino_pos);
+
 		//
 		bush.move(0.25,dino);
 		bush2.move(0.25, dino);
