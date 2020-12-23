@@ -162,7 +162,7 @@ int jump(sf::Sprite &dino, Position dino_pos)
 	double gravity = 0.3;
 
 	//sprawdzenie, czy skok jest mozliwy oraz: skok prawda, dino na ziemi falsz
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && on_ground && !is_jump)
+	if ((sf::Keyboard::isKeyPressed(sf::Keyboard::Space) || sf::Keyboard::isKeyPressed(sf::Keyboard::W) || sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) && on_ground && !is_jump)
 	{
 		is_jump = true;
 		on_ground = false;
