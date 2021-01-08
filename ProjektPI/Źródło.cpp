@@ -4,6 +4,7 @@
 #include <SFML/System.hpp>
 #include <fstream>
 #include <time.h>
+#include <string>
 #include "menu.h"
 #include "scorescreen.h"
 
@@ -29,7 +30,7 @@ public:
 	}
 
 	//metoda klasy odpowiadaj¹ca za przemieszczanie siê przeszkody oraz kolizjê z dino
-	void move(float speed,sf::Sprite& dino)
+	void move(float speed,sf::Sprite& dino,int& health)
 	{
 		//przemieszczanie siê przeszkody
 		obstacleSprite.setPosition(obstacleSprite.getPosition().x - speed,obstacleSprite.getPosition().y);
@@ -40,7 +41,7 @@ public:
 		//os³uga kolizji, wykona siê gdy dwa sprite'y siê zetkn¹ i gdy czas nieœmiertelnoœci bêdzie wiêkszy ni¿ 1 sekunda (zabezpieczenie przed setkami wykonañ podczas przechodzenia przez przeszkode)
 		if (obstacleSprite.getGlobalBounds().intersects(dino.getGlobalBounds()) && immune.getElapsedTime().asSeconds() > 1)
 		{
-			cout << "zycie -1";
+			health = health - 1;
 			immune.restart();
 		}
 	}
@@ -206,6 +207,7 @@ int main()
 	fstream scores;
 
 	//uruchomienie funkcji menu wyœwietlaj¹cej menu gry
+	menuidentifier:
 	menu(window,scores);
 
 	//utworzenie sprite dinozaura oraz utworzenie tekstury i za³adowanie jej z pliku (³adowanie tekstury z obs³ug¹ b³êdu)
@@ -246,6 +248,19 @@ int main()
 	dino_pos.y = dino.getPosition().y;
 	dino_pos.x = dino.getPosition().x;*/
 
+	//¯ycia dinozaura
+	sf::Text healthText;
+	sf::Font healthFont;
+	int health = 3;
+	if (!healthFont.loadFromFile("./fonts/Texturina-VariableFont_opsz,wght.ttf"))
+	{
+		// error
+	}
+	healthText.setFont(healthFont);
+	healthText.setString(to_string(health));
+	healthText.setFillColor(sf::Color::Red);
+	healthText.setPosition( window.getSize().x - healthText.getLocalBounds().width , 0 );
+
 	//g³ówna pêtla programu
 	while (window.isOpen())
 	{
@@ -276,13 +291,18 @@ int main()
 				is_jump = true;
 				on_ground = false; 
 			}
+			if (windowEvent.type == sf::Event::KeyReleased && (windowEvent.key.code == sf::Keyboard::Enter) && health <= 0)
+			{
+				goto menuidentifier;
+				break;
+			}
 		}
 		jump(dino, is_jump, on_ground,window);
 
 		//
-		bush.move(0.35,dino);
-		bush2.move(0.35, dino);
-		bush3.move(0.35, dino);
+		bush.move(0.35,dino,health);
+		bush2.move(0.35, dino,health);
+		bush3.move(0.35, dino,health);
 		//podanie koloru w window.clear() sprawia, ¿e ten kolor staje siê kolorem t³a
 		window.clear(sf::Color::White);
 		window.draw(backgroundSprite);
@@ -290,6 +310,19 @@ int main()
 		bush2.draw(window);
 		bush3.draw(window);
 		window.draw(dino);
+		//wyœwietlanie ¿yæka
+		if (health > 0)
+		{
+			healthText.setString(to_string(health));
+			window.draw(healthText);
+		}
+		else
+		{
+			healthText.setString(" GAME OVER\n(press ENTER)");
+			healthText.setPosition(window.getSize().x / 2 - healthText.getLocalBounds().width/2, window.getSize().y / 2 - healthText.getLocalBounds().height/2);
+			window.draw(healthText);
+
+		}
 		window.display();
 	}
 }
