@@ -321,6 +321,7 @@ int main()
 			healthText.setString(" GAME OVER\n(press ENTER)");
 			healthText.setPosition(window.getSize().x / 2 - healthText.getLocalBounds().width/2, window.getSize().y / 2 - healthText.getLocalBounds().height/2);
 			window.draw(healthText);
+			on_ground = false;
 
 		}
 		window.display();
