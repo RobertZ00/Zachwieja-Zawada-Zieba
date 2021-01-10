@@ -10,13 +10,6 @@
 
 using namespace std;
 
-//uzyte przy skakaniu
-//struct Position
-//{
-//	double x;
-//	double y;
-//};
-
 //Klasa do tworzenia przeszkód na mapie
 class obstacle
 {
