@@ -254,7 +254,7 @@ int main()
 	int health = 3;
 	if (!healthFont.loadFromFile("./fonts/Texturina-VariableFont_opsz,wght.ttf"))
 	{
-		// error
+		// error!
 	}
 	healthText.setFont(healthFont);
 	healthText.setString(to_string(health));
