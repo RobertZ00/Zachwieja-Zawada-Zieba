@@ -203,7 +203,7 @@ int main()
 	//!dziêki temu sf::Event::KeyPressed bêdzie wykonywa³o siê tylko raz na wciœniêcie klawisza!
 	window.setKeyRepeatEnabled(false);
 
-	//utworzenie zmiennej do otwierania plików tekstowych?(nw jak to siê nazywa profesjonalnie)
+	//utworzenie uchwytu do otwarcia pliku
 	fstream scores;
 
 	//uruchomienie funkcji menu wyœwietlaj¹cej menu gry
@@ -311,7 +311,7 @@ int main()
 		bush3.draw(window);
 		window.draw(dino);
 		//wyœwietlanie ¿yæka
-		if (health > 0)
+		if (health > 1)
 		{
 			healthText.setString(to_string(health));
 			window.draw(healthText);
