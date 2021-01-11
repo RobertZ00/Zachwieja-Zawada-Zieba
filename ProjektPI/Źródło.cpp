@@ -304,7 +304,7 @@ int main()
 		bush3.draw(window);
 		window.draw(dino);
 		//wyœwietlanie ¿yæka
-		if (health > 1)
+		if (health >= 1)
 		{
 			healthText.setString(to_string(health));
 			window.draw(healthText);
