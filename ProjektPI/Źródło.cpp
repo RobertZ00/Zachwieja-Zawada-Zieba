@@ -9,7 +9,7 @@
 #include "scorescreen.h"
 
 using namespace std;
-
+//
 //Klasa do tworzenia przeszkód na mapie
 class obstacle
 {
@@ -166,7 +166,7 @@ int jump(sf::Sprite &dino, bool& is_jump, bool& on_ground, sf::RenderWindow& win
 	//sprawdzanie czy dino nie spada
 	if (dino.getPosition().y >= 441 && dino.getPosition().x > window.getSize().x / 10)
 	{
-		dino.setPosition(dino.getPosition().x - 0.15, 441);	
+		dino.setPosition(dino.getPosition().x - 0.15, 441);
 		on_ground = true;
 	}
 	//sprawdzanie czy jest aktualnie w locie
