@@ -185,7 +185,6 @@ int jump(sf::Sprite &dino, bool& is_jump, bool& on_ground, sf::RenderWindow& win
 }
 
 
-
 int main()
 {
 	srand(time(0));
@@ -213,6 +212,7 @@ int main()
 		dino.setTextureRect({ 0,0,55,60 });
 		dino.setPosition(window.getSize().x / 10, 441);
 
+
 	//t³o gry
 	sf::Texture backgroundtxt1;
 		backgroundtxt1.loadFromFile("./textures/background1.jpg");
@@ -222,8 +222,9 @@ int main()
 		backgroundtxt2.setSmooth(true);
 	sf::Sprite backgroundSprite(backgroundtxt1);
 
-	//zegar animacji
+	//zegar animacji i do naliczania punktów
 	sf::Clock t0;
+	sf::Clock score_clock;
 
 	//iterator animacji
 	int animation = 0;
@@ -237,6 +238,7 @@ int main()
 	//u¿yte przy obs³udze skakania
 	bool is_jump = false;
 	bool on_ground = true;
+	bool is_bending = false;
 	/*Position dino_pos;
 	dino_pos.y = dino.getPosition().y;
 	dino_pos.x = dino.getPosition().x;*/
@@ -254,19 +256,33 @@ int main()
 	healthText.setFillColor(sf::Color::Red);
 	healthText.setPosition( window.getSize().x - healthText.getLocalBounds().width , 0 );
 
+	//wynik
+	sf::Text scoreText;
+	sf::Font scoreFont;
+	int player_score = 0;
+	if (!scoreFont.loadFromFile("./fonts/Texturina-VariableFont_opsz,wght.ttf"))
+	{
+		// error!
+	}
+	scoreText.setFont(scoreFont);
+	scoreText.setString(to_string(player_score));
+	scoreText.setPosition(10, 10);
+	scoreText.setFillColor(sf::Color::Green);
+
+
 	//g³ówna pêtla programu
 	while (window.isOpen())
 	{
 		//animacja biegn¹cego dinozaura oraz zmiana t³a gry
-		if (t0.getElapsedTime().asSeconds() >= 0.1f)
+		/*if (t0.getElapsedTime().asSeconds() >= 0.1f)
 		{
-			dino.setTextureRect({ 55*animation,0,55,60 });
+			dino.setTextureRect({ 55 * animation,0,55,60 });
 			(animation % 2) ? backgroundSprite.setTexture(backgroundtxt2) : backgroundSprite.setTexture(backgroundtxt1);
 			animation++;
 			t0.restart();
 			if (animation == 4)
 				animation = 0;
-		}
+		}*/
 		//obs³uga eventów
 		sf::Event windowEvent;
 		while (window.pollEvent(windowEvent))
@@ -282,20 +298,57 @@ int main()
 			if ((sf::Keyboard::isKeyPressed(sf::Keyboard::Space) || sf::Keyboard::isKeyPressed(sf::Keyboard::W) || sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) && on_ground && !is_jump)
 			{
 				is_jump = true;
-				on_ground = false; 
+				on_ground = false;
 			}
 			if (windowEvent.type == sf::Event::KeyReleased && (windowEvent.key.code == sf::Keyboard::Enter) && health <= 0)
 			{
 				goto menuidentifier;
 				break;
 			}
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down) || sf::Keyboard::isKeyPressed(sf::Keyboard::S) && on_ground)
+			{
+				is_bending = true;
+				if (!dino_texture.loadFromFile("./textures/almighty_dragon_bending.png"))
+					return EXIT_FAILURE;
+				dino.setTextureRect({ 0,0,83,23 });
+				dino.setPosition(window.getSize().x / 10, 541);
+				if (t0.getElapsedTime().asSeconds() >= 0.1f)
+				{
+					dino.setTextureRect({ 55 * animation,0,83,23 });
+					(animation % 2) ? backgroundSprite.setTexture(backgroundtxt2) : backgroundSprite.setTexture(backgroundtxt1);
+					animation++;
+					t0.restart();
+					if (animation == 4)
+						animation = 0;
+				}
+				
+			}
+			if (!(sf::Keyboard::isKeyPressed(sf::Keyboard::Down) || sf::Keyboard::isKeyPressed(sf::Keyboard::S)))
+			{
+				is_bending = false;
+				
+			}
+			if (!is_bending)
+			{
+				if (!dino_texture.loadFromFile("./textures/almighty_dragon.png"))
+					return EXIT_FAILURE;
+				dino.setTextureRect({ 0,0,55,60 });
+				if (t0.getElapsedTime().asSeconds() >= 0.1f)
+				{
+					dino.setTextureRect({ 55 * animation,0,55,60 });
+					(animation % 2) ? backgroundSprite.setTexture(backgroundtxt2) : backgroundSprite.setTexture(backgroundtxt1);
+					animation++;
+					t0.restart();
+					if (animation == 4)
+						animation = 0;
+				}
+			}
 		}
 		jump(dino, is_jump, on_ground,window);
 
-		//
-		bush.move(0.35,dino,health);
-		bush2.move(0.35, dino,health);
-		bush3.move(0.35, dino,health);
+		bush.move(0.35, dino, health);
+		bush2.move(0.35, dino, health);
+		bush3.move(0.35, dino, health);
 		//podanie koloru w window.clear() sprawia, ¿e ten kolor staje siê kolorem t³a
 		window.clear(sf::Color::White);
 		window.draw(backgroundSprite);
@@ -303,17 +356,29 @@ int main()
 		bush2.draw(window);
 		bush3.draw(window);
 		window.draw(dino);
+		
+
+		//naliczanie punktów
+		player_score = score_clock.getElapsedTime().asSeconds();
+		scoreText.setString(to_string(player_score));
+		window.draw(scoreText);
+
 		//wyœwietlanie ¿yæka
-		if (health > 1)
+		if (health >= 1)
 		{
 			healthText.setString(to_string(health));
 			window.draw(healthText);
 		}
 		else
 		{
+			//wyswietlanie wyniku UWAGA - NIE ZATRZYMUJE SIE, BO ZEGAR CALY CZAS NALICZA
+			int total_score = player_score;
+			scoreText.setString(to_string(total_score));
+			scoreText.setPosition(window.getSize().x / 2 - healthText.getLocalBounds().width / 2, window.getSize().y / 2 - healthText.getLocalBounds().height / 2 + 100);
 			healthText.setString(" GAME OVER\n(press ENTER)");
 			healthText.setPosition(window.getSize().x / 2 - healthText.getLocalBounds().width/2, window.getSize().y / 2 - healthText.getLocalBounds().height/2);
 			window.draw(healthText);
+			window.draw(scoreText);
 			on_ground = false;
 
 		}
