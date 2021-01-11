@@ -173,7 +173,7 @@ int jump(sf::Sprite &dino, bool& is_jump, bool& on_ground, sf::RenderWindow& win
 	//sprawdzanie czy dino nie spada
 	if (dino.getPosition().y >= 441 && dino.getPosition().x > window.getSize().x / 10)
 	{
-		dino.setPosition(dino.getPosition().x - 0.15, 441);	
+		dino.setPosition(dino.getPosition().x - 0.15, 441);
 		on_ground = true;
 	}
 	//sprawdzanie czy jest aktualnie w locie
@@ -289,7 +289,7 @@ int main()
 			if ((sf::Keyboard::isKeyPressed(sf::Keyboard::Space) || sf::Keyboard::isKeyPressed(sf::Keyboard::W) || sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) && on_ground && !is_jump)
 			{
 				is_jump = true;
-				on_ground = false; 
+				on_ground = false;
 			}
 			if (windowEvent.type == sf::Event::KeyReleased && (windowEvent.key.code == sf::Keyboard::Enter) && health <= 0)
 			{
