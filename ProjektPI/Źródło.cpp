@@ -9,7 +9,7 @@
 #include "scorescreen.h"
 
 using namespace std;
-
+//
 //Klasa do tworzenia przeszkód na mapie
 class obstacle
 {
