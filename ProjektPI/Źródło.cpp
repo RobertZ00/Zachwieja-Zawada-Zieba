@@ -9,14 +9,7 @@
 #include "scorescreen.h"
 
 using namespace std;
-
-//uzyte przy skakaniu
-//struct Position
-//{
-//	double x;
-//	double y;
-//};
-
+//
 //Klasa do tworzenia przeszkód na mapie
 class obstacle
 {
@@ -203,7 +196,7 @@ int main()
 	//!dziêki temu sf::Event::KeyPressed bêdzie wykonywa³o siê tylko raz na wciœniêcie klawisza!
 	window.setKeyRepeatEnabled(false);
 
-	//utworzenie zmiennej do otwierania plików tekstowych?(nw jak to siê nazywa profesjonalnie)
+	//utworzenie uchwytu do otwarcia pliku
 	fstream scores;
 
 	//uruchomienie funkcji menu wyœwietlaj¹cej menu gry
@@ -311,7 +304,7 @@ int main()
 		bush3.draw(window);
 		window.draw(dino);
 		//wyœwietlanie ¿yæka
-		if (health > 0)
+		if (health > 1)
 		{
 			healthText.setString(to_string(health));
 			window.draw(healthText);
@@ -321,6 +314,7 @@ int main()
 			healthText.setString(" GAME OVER\n(press ENTER)");
 			healthText.setPosition(window.getSize().x / 2 - healthText.getLocalBounds().width/2, window.getSize().y / 2 - healthText.getLocalBounds().height/2);
 			window.draw(healthText);
+			on_ground = false;
 
 		}
 		window.display();
