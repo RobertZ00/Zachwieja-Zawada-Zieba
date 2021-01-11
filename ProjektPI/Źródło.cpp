@@ -7,6 +7,7 @@
 #include <string>
 #include "menu.h"
 #include "scorescreen.h"
+#include "collision.h";
 
 using namespace std;
 //
@@ -14,6 +15,8 @@ using namespace std;
 class obstacle
 {
 public:
+	sf::Sprite obstacleSprite;
+	sf::Clock immune;
 	//konstruktor klasy, trzeba podac link do tekstury oraz pocz¹tkow¹ pozycje przeszkody
 	obstacle(string& texture_link,int basic_pos)
 	{
@@ -32,11 +35,23 @@ public:
 		if(obstacleSprite.getPosition().x<-44) obstacleSprite.setPosition(rand()%1000 + 800, obstacleSprite.getPosition().y);
 
 		//os³uga kolizji, wykona siê gdy dwa sprite'y siê zetkn¹ i gdy czas nieœmiertelnoœci bêdzie wiêkszy ni¿ 1 sekunda (zabezpieczenie przed setkami wykonañ podczas przechodzenia przez przeszkode)
-		if (obstacleSprite.getGlobalBounds().intersects(dino.getGlobalBounds()) && immune.getElapsedTime().asSeconds() > 1)
+		
+		if (Collision::PixelPerfectTest(dino,obstacleSprite))
+		{
+			if(immune.getElapsedTime().asSeconds() > 1)
+			{ 
+			health = health - 1;
+			immune.restart();
+			cout << "dziala" << endl;
+			}
+		}
+
+		/*if (obstacleSprite.getGlobalBounds().intersects(dino.getGlobalBounds()) && immune.getElapsedTime().asSeconds() > 1)
 		{
 			health = health - 1;
 			immune.restart();
 		}
+		*/
 	}
 
 	//metoda wyœwietlania przeszkody na ekranie
@@ -47,8 +62,8 @@ public:
 private:
 	sf::Texture none;
 	sf::Texture obstacleTexture;
-	sf::Sprite obstacleSprite;
-	sf::Clock immune;
+	
+	
 };
 
 int score(sf::RenderWindow& window, fstream& scores,Menu& menu)
@@ -234,6 +249,7 @@ int main()
 	obstacle bush(bushtxt, 500);
 	obstacle bush2(bushtxt, 800);
 	obstacle bush3(bushtxt, 650);
+	
 
 	//u¿yte przy obs³udze skakania
 	bool is_jump = false;
@@ -357,6 +373,32 @@ int main()
 		bush3.draw(window);
 		window.draw(dino);
 		
+		//Proba detekcji kolizji pixelowej
+		
+		if (Collision::PixelPerfectTest(dino,bush.obstacleSprite))
+		{
+			cout << "Collison!" << endl;
+			
+
+		}
+		else if (Collision::PixelPerfectTest(dino, bush2.obstacleSprite))
+		{
+			cout << "Collison!" << endl;
+			
+		}
+		else if (Collision::PixelPerfectTest(dino, bush3.obstacleSprite))
+		{
+			cout << "Collison!" << endl;
+			
+		}
+		else
+		{
+			cout << "No collision!" << endl;
+		}
+		
+
+
+ 
 
 		//naliczanie punktów
 		player_score = score_clock.getElapsedTime().asSeconds();
