@@ -10,7 +10,7 @@
 #include "collision.h";
 
 using namespace std;
-//
+
 //Klasa do tworzenia przeszkód na mapie
 class obstacle
 {
@@ -401,19 +401,18 @@ int main()
  
 
 		//naliczanie punktów
-		player_score = score_clock.getElapsedTime().asSeconds();
-		scoreText.setString(to_string(player_score));
-		window.draw(scoreText);
 
 		//wyœwietlanie ¿yæka
 		if (health >= 1)
 		{
 			healthText.setString(to_string(health));
 			window.draw(healthText);
+			player_score = score_clock.getElapsedTime().asSeconds();
+			scoreText.setString(to_string(player_score));
+			window.draw(scoreText);
 		}
 		else
 		{
-			//wyswietlanie wyniku UWAGA - NIE ZATRZYMUJE SIE, BO ZEGAR CALY CZAS NALICZA
 			int total_score = player_score;
 			scoreText.setString(to_string(total_score));
 			scoreText.setPosition(window.getSize().x / 2 - healthText.getLocalBounds().width / 2, window.getSize().y / 2 - healthText.getLocalBounds().height / 2 + 100);
