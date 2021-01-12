@@ -329,6 +329,8 @@ int main()
 				goto menuidentifier;
 				break;
 			}
+
+			//schylanie
 			if ((sf::Keyboard::isKeyPressed(sf::Keyboard::Down) || sf::Keyboard::isKeyPressed(sf::Keyboard::S)) && on_ground)
 			{
 				is_bending = true;
