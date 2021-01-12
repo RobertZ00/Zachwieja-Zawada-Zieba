@@ -69,13 +69,13 @@ private:
 int score(sf::RenderWindow& window, fstream& scores,Menu& menu)
 {
 	//otwarcie pliku score.txt z opcj¹ odczytu
-	scores.open("score.txt", ios::in);
+	scores.open("score.txt");
 	if (scores.good())
 	{
 		string out;
 		string linia;
 		//zapisanie ca³ego pliku do zmiennej linia
-		for (int i = 0; i < 10; i++)
+		for (int i = 0; i < 3; i++)
 		{
 			getline(scores, out);
 			linia += out + "\n";
@@ -165,23 +165,23 @@ int jump(sf::Sprite &dino, bool& is_jump, bool& on_ground, sf::RenderWindow& win
 {
 
 	//predkosc opadania i wznoszenia
-	double gravity = 0.3;
+	double gravity = 0.45;
 
 	//jesli prawda, ze skok to dino porusza sie do gory
 	if (is_jump)
 	{
-		dino.setPosition(dino.getPosition().x + 0.10, dino.getPosition().y - gravity);
+		dino.setPosition(dino.getPosition().x, dino.getPosition().y - gravity);
 	}
 
 	//poruszanie sie w dol w innych przypadkach niz prawda ze skok
 	else if(dino.getPosition().y != 441)
 	{
-		dino.setPosition(dino.getPosition().x + 0.10, dino.getPosition().y+gravity);
+		dino.setPosition(dino.getPosition().x, dino.getPosition().y+gravity);
 	}
 	//sprawdzanie czy dino nie spada
-	if (dino.getPosition().y >= 441 && dino.getPosition().x > window.getSize().x / 10)
+	if (dino.getPosition().y >= 441)
 	{
-		dino.setPosition(dino.getPosition().x - 0.15, 441);
+		dino.setPosition(dino.getPosition().x, 441);
 		on_ground = true;
 	}
 	//sprawdzanie czy jest aktualnie w locie
@@ -255,9 +255,6 @@ int main()
 	bool is_jump = false;
 	bool on_ground = true;
 	bool is_bending = false;
-	/*Position dino_pos;
-	dino_pos.y = dino.getPosition().y;
-	dino_pos.x = dino.getPosition().x;*/
 
 	//¯ycia dinozaura
 	sf::Text healthText;
@@ -285,12 +282,21 @@ int main()
 	scoreText.setPosition(10, 10);
 	scoreText.setFillColor(sf::Color::Green);
 
+	//wykorzystane do zapisywania wyniku do tabeli
+	scores.open("score.txt");
+	int topScores[3] = { 0,0,0 };
+	for (int i = 0; i < 3; i++)
+	{
+		string temp;
+		getline(scores, temp);
+		topScores[i] = stoi("2");
+	}
 
 	//g³ówna pêtla programu
 	while (window.isOpen())
 	{
 		//animacja biegn¹cego dinozaura oraz zmiana t³a gry
-		/*if (t0.getElapsedTime().asSeconds() >= 0.1f)
+		if (t0.getElapsedTime().asSeconds() >= 0.1f)
 		{
 			dino.setTextureRect({ 55 * animation,0,55,60 });
 			(animation % 2) ? backgroundSprite.setTexture(backgroundtxt2) : backgroundSprite.setTexture(backgroundtxt1);
@@ -298,7 +304,7 @@ int main()
 			t0.restart();
 			if (animation == 4)
 				animation = 0;
-		}*/
+		}
 		//obs³uga eventów
 		sf::Event windowEvent;
 		while (window.pollEvent(windowEvent))
@@ -362,9 +368,9 @@ int main()
 		}
 		jump(dino, is_jump, on_ground,window);
 
-		bush.move(0.35, dino, health);
-		bush2.move(0.35, dino, health);
-		bush3.move(0.35, dino, health);
+		bush.move(0.55, dino, health);
+		bush2.move(0.55, dino, health);
+		bush3.move(0.55, dino, health);
 		//podanie koloru w window.clear() sprawia, ¿e ten kolor staje siê kolorem t³a
 		window.clear(sf::Color::White);
 		window.draw(backgroundSprite);
@@ -394,19 +400,15 @@ int main()
 		else
 		{
 			cout << "No collision!" << endl;
+			topScores[0];
 		}
 		
-
-
- 
-
-		//naliczanie punktów
-
 		//wyœwietlanie ¿yæka
 		if (health >= 1)
 		{
 			healthText.setString(to_string(health));
 			window.draw(healthText);
+			//naliczanie punktów
 			player_score = score_clock.getElapsedTime().asSeconds();
 			scoreText.setString(to_string(player_score));
 			window.draw(scoreText);
@@ -414,14 +416,28 @@ int main()
 		else
 		{
 			int total_score = player_score;
-			scoreText.setString(to_string(total_score));
-			scoreText.setPosition(window.getSize().x / 2 - healthText.getLocalBounds().width / 2, window.getSize().y / 2 - healthText.getLocalBounds().height / 2 + 100);
+			scoreText.setString("Your score: " + to_string(total_score));
+			scoreText.setPosition(window.getSize().x / 2 - scoreText.getLocalBounds().width / 2, window.getSize().y / 2 - scoreText.getLocalBounds().height / 2 - healthText.getLocalBounds().height);
 			healthText.setString(" GAME OVER\n(press ENTER)");
 			healthText.setPosition(window.getSize().x / 2 - healthText.getLocalBounds().width/2, window.getSize().y / 2 - healthText.getLocalBounds().height/2);
 			window.draw(healthText);
 			window.draw(scoreText);
 			on_ground = false;
-
+			if (total_score > topScores[0])
+			{
+				scores << total_score << "\n" << topScores[0] << "\n" << topScores[1];
+				scores.close();
+			}
+			else if (total_score > topScores[1])
+			{
+				scores << topScores[0] << "\n" << total_score << "\n" << topScores[1];
+				scores.close();
+			}
+			else if (total_score > topScores[2])
+			{
+				scores << topScores[0] << "\n" << topScores[1] << "\n" << total_score;
+				scores.close();
+			}
 		}
 		window.display();
 	}
