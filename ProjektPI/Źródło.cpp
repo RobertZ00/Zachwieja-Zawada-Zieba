@@ -174,23 +174,23 @@ int jump(sf::Sprite &dino, bool& is_jump, bool& on_ground, sf::RenderWindow& win
 	}
 
 	//poruszanie sie w dol w innych przypadkach niz prawda ze skok
-	else if(dino.getPosition().y != 441)
+	else if(dino.getPosition().y != 500)
 	{
 		dino.setPosition(dino.getPosition().x + 0.10, dino.getPosition().y+gravity);
 	}
 	//sprawdzanie czy dino nie spada
-	if (dino.getPosition().y >= 441 && dino.getPosition().x > window.getSize().x / 10)
+	if (dino.getPosition().y >= 500 && dino.getPosition().x > window.getSize().x / 10)
 	{
-		dino.setPosition(dino.getPosition().x - 0.15, 441);
+		dino.setPosition(dino.getPosition().x - 0.15, 500);
 		on_ground = true;
 	}
 	//sprawdzanie czy jest aktualnie w locie
-	if (dino.getPosition().y < 441)
+	if (dino.getPosition().y < 500)
 	{
 		on_ground = false;
 	}
 	//limit wysokosci dla skoku
-	if (dino.getPosition().y <= 361)
+	if (dino.getPosition().y <= 400)
 	{
 		is_jump = false;
 	}
@@ -224,8 +224,10 @@ int main()
 	//sprawia, ¿e tekstury s¹ wyg³adzone? nw czy to coœ daje ale zawsze spoko
 	dino_texture.setSmooth(true);
 	sf::Sprite dino(dino_texture);
+	//Origin - ustawienie cpunktu centralnego sprite'a
+	dino.setOrigin(22.5f, 60.0f);
 		dino.setTextureRect({ 0,0,55,60 });
-		dino.setPosition(window.getSize().x / 10, 441);
+		dino.setPosition(window.getSize().x / 10, 500);
 
 
 	//t³o gry
@@ -290,15 +292,15 @@ int main()
 	while (window.isOpen())
 	{
 		//animacja biegn¹cego dinozaura oraz zmiana t³a gry
-		/*if (t0.getElapsedTime().asSeconds() >= 0.1f)
+		if (t0.getElapsedTime().asSeconds() >= 0.1f)
 		{
-			dino.setTextureRect({ 55 * animation,0,55,60 });
+			//dino.setTextureRect({ 55 * animation,0,55,60 });
 			(animation % 2) ? backgroundSprite.setTexture(backgroundtxt2) : backgroundSprite.setTexture(backgroundtxt1);
 			animation++;
 			t0.restart();
 			if (animation == 4)
 				animation = 0;
-		}*/
+		}
 		//obs³uga eventów
 		sf::Event windowEvent;
 		while (window.pollEvent(windowEvent))
@@ -321,21 +323,17 @@ int main()
 				goto menuidentifier;
 				break;
 			}
-			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down) || sf::Keyboard::isKeyPressed(sf::Keyboard::S) && on_ground)
+			if ((sf::Keyboard::isKeyPressed(sf::Keyboard::Down) || sf::Keyboard::isKeyPressed(sf::Keyboard::S)) && on_ground)
 			{
 				is_bending = true;
 				if (!dino_texture.loadFromFile("./textures/almighty_dragon_bending.png"))
 					return EXIT_FAILURE;
+				dino.setOrigin(22.5f, 22.0f);
 				dino.setTextureRect({ 0,0,83,23 });
-				dino.setPosition(window.getSize().x / 10, 541);
+
 				if (t0.getElapsedTime().asSeconds() >= 0.1f)
 				{
 					dino.setTextureRect({ 55 * animation,0,83,23 });
-					(animation % 2) ? backgroundSprite.setTexture(backgroundtxt2) : backgroundSprite.setTexture(backgroundtxt1);
-					animation++;
-					t0.restart();
-					if (animation == 4)
-						animation = 0;
 				}
 				
 			}
@@ -348,15 +346,11 @@ int main()
 			{
 				if (!dino_texture.loadFromFile("./textures/almighty_dragon.png"))
 					return EXIT_FAILURE;
+				dino.setOrigin(22.5f, 60.0f);
 				dino.setTextureRect({ 0,0,55,60 });
 				if (t0.getElapsedTime().asSeconds() >= 0.1f)
 				{
 					dino.setTextureRect({ 55 * animation,0,55,60 });
-					(animation % 2) ? backgroundSprite.setTexture(backgroundtxt2) : backgroundSprite.setTexture(backgroundtxt1);
-					animation++;
-					t0.restart();
-					if (animation == 4)
-						animation = 0;
 				}
 			}
 		}
@@ -395,7 +389,6 @@ int main()
 		{
 			cout << "No collision!" << endl;
 		}
-		
 
 
  
@@ -416,8 +409,8 @@ int main()
 			//wyswietlanie wyniku UWAGA - NIE ZATRZYMUJE SIE, BO ZEGAR CALY CZAS NALICZA
 			int total_score = player_score;
 			scoreText.setString(to_string(total_score));
-			scoreText.setPosition(window.getSize().x / 2 - healthText.getLocalBounds().width / 2, window.getSize().y / 2 - healthText.getLocalBounds().height / 2 + 100);
-			healthText.setString(" GAME OVER\n(press ENTER)");
+			scoreText.setPosition(window.getSize().x / 2 - healthText.getLocalBounds().width / 2 + 170, window.getSize().y / 2 - healthText.getLocalBounds().height / 2 + 95);
+			healthText.setString(" GAME OVER\n(press ENTER)\n Your score: ");
 			healthText.setPosition(window.getSize().x / 2 - healthText.getLocalBounds().width/2, window.getSize().y / 2 - healthText.getLocalBounds().height/2);
 			window.draw(healthText);
 			window.draw(scoreText);
