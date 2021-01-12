@@ -337,18 +337,17 @@ int main()
 				if (!dino_texture.loadFromFile("./textures/almighty_dragon_bending.png"))
 					return EXIT_FAILURE;
 				dino.setOrigin(22.5f, 22.0f);
-				dino.setTextureRect({ 0,0,83,23 });
+				dino.setTextureRect({ 0,0,78,49 });
 
 				if (t0.getElapsedTime().asSeconds() >= 0.1f)
 				{
-					dino.setTextureRect({ 55 * animation,0,83,23 });
+					dino.setTextureRect({ 55 * animation,0,78,49 });
 				}
 				
 			}
 			if (!(sf::Keyboard::isKeyPressed(sf::Keyboard::Down) || sf::Keyboard::isKeyPressed(sf::Keyboard::S)))
 			{
 				is_bending = false;
-				
 			}
 			if (!is_bending)
 			{
