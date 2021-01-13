@@ -1,4 +1,4 @@
-#include <iostream>
+ï»¿#include <iostream>
 #include <SFML/Window.hpp>
 #include <SFML/Graphics.hpp>
 #include <SFML/System.hpp>
@@ -11,13 +11,13 @@
 
 using namespace std;
 
-//Klasa do tworzenia przeszkód na mapie
+//Klasa do tworzenia przeszkÃ³d na mapie
 class obstacle
 {
 public:
 	sf::Sprite obstacleSprite;
 	sf::Clock immune;
-	//konstruktor klasy, trzeba podac link do tekstury oraz pocz¹tkow¹ pozycje przeszkody
+	//konstruktor klasy, trzeba podac link do tekstury oraz poczÄ…tkowÄ… pozycje przeszkody
 	obstacle(string& texture_link,int basic_pos)
 	{
 		obstacleTexture.loadFromFile(texture_link);
@@ -25,16 +25,16 @@ public:
 		obstacleSprite.setPosition(basic_pos, 472);
 	}
 
-	//metoda klasy odpowiadaj¹ca za przemieszczanie siê przeszkody oraz kolizjê z dino
+	//metoda klasy odpowiadajÄ…ca za przemieszczanie siÄ™ przeszkody oraz kolizjÄ™ z dino
 	void move(float speed,sf::Sprite& dino,int& health)
 	{
-		//przemieszczanie siê przeszkody
+		//przemieszczanie siÄ™ przeszkody
 		obstacleSprite.setPosition(obstacleSprite.getPosition().x - speed,obstacleSprite.getPosition().y);
 
 		//ustawienie nowej losowej pozycji po prawej stronie ekranu gdy przeszkoda zniknie z lewej storny ekranu
 		if(obstacleSprite.getPosition().x<-120) obstacleSprite.setPosition(rand()%1000 + 800, obstacleSprite.getPosition().y);
 
-		//os³uga kolizji, wykona siê gdy dwa sprite'y siê zetkn¹ i gdy czas nieœmiertelnoœci bêdzie wiêkszy ni¿ 1 sekunda (zabezpieczenie przed setkami wykonañ podczas przechodzenia przez przeszkode)
+		//osÅ‚uga kolizji, wykona siÄ™ gdy dwa sprite'y siÄ™ zetknÄ… i gdy czas nieÅ›miertelnoÅ›ci bÄ™dzie wiÄ™kszy niÅ¼ 1 sekunda (zabezpieczenie przed setkami wykonaÅ„ podczas przechodzenia przez przeszkode)
 		
 		if (Collision::PixelPerfectTest(dino,obstacleSprite))
 		{
@@ -54,7 +54,7 @@ public:
 		*/
 	}
 
-	//metoda wyœwietlania przeszkody na ekranie
+	//metoda wyÅ›wietlania przeszkody na ekranie
 	void draw(sf::RenderWindow& window)
 	{
 		window.draw(obstacleSprite);
@@ -68,13 +68,13 @@ private:
 
 int score(sf::RenderWindow& window, fstream& scores,Menu& menu)
 {
-	//otwarcie pliku score.txt z opcj¹ odczytu
+	//otwarcie pliku score.txt z opcjÄ… odczytu
 	scores.open("score.txt");
 	if (scores.good())
 	{
 		string out;
 		string linia;
-		//zapisanie ca³ego pliku do zmiennej linia
+		//zapisanie caÅ‚ego pliku do zmiennej linia
 		for (int i = 0; i < 3; i++)
 		{
 			getline(scores, out);
@@ -82,29 +82,29 @@ int score(sf::RenderWindow& window, fstream& scores,Menu& menu)
 		}
 		//utworzenie obiektu klasy scorescreen
 		scorescreen scoresc(window.getSize().x,window.getSize().y,linia);
-		//pêtla wyœwietlaj¹ca ekran z najlepszymi wynikami
+		//pÄ™tla wyÅ›wietlajÄ…ca ekran z najlepszymi wynikami
 		while (window.isOpen())
 		{
 			menu.MoveUp();
-			//obs³uga eventow
+			//obsÅ‚uga eventow
 			sf::Event windowEvent;
 			while (window.pollEvent(windowEvent))
 			{
-				//wyjœcie z gry ESC i zamkniêcie okna
+				//wyjÅ›cie z gry ESC i zamkniÄ™cie okna
 				if (windowEvent.type == sf::Event::Closed || sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
 				{
 					window.close();
 				}
-				//obs³uga entera (wyjœcie z tabeli wyników)
+				//obsÅ‚uga entera (wyjÅ›cie z tabeli wynikÃ³w)
 				if (windowEvent.type == sf::Event::KeyReleased && windowEvent.key.code == sf::Keyboard::Enter)
 				{
 					scores.close();
 					return 0;
 				}
 			}
-			//wyœwietlanie 
+			//wyÅ›wietlanie 
 			window.clear(sf::Color::White);
-			//odwo³anie siê do w³aœciwoœci klasy scoresc(definicja w³aœciwoœci tej klasy w oddzielnym pliku)
+			//odwoÅ‚anie siÄ™ do wÅ‚aÅ›ciwoÅ›ci klasy scoresc(definicja wÅ‚aÅ›ciwoÅ›ci tej klasy w oddzielnym pliku)
 			scoresc.draw(window);
 			window.display();
 		}
@@ -113,30 +113,30 @@ int score(sf::RenderWindow& window, fstream& scores,Menu& menu)
 
 int menu(sf::RenderWindow &window,fstream &scores)
 {
-	//utworzenie obiektu klasy MENU (w nawiasach s¹ podane wartoœci dla konstruktora klasy)
-	Menu menu(window.getSize().x, window.getSize().y);//zamiast podawaæ sta³¹ wartoœæ lepiej podaæ wzglêdn¹ poniewa¿ teraz wystarczy zmieniæ rozmiary okna w jednym miejscu i wszystko siê dostosuje
+	//utworzenie obiektu klasy MENU (w nawiasach sÄ… podane wartoÅ›ci dla konstruktora klasy)
+	Menu menu(window.getSize().x, window.getSize().y);//zamiast podawaÄ‡ staÅ‚Ä… wartoÅ›Ä‡ lepiej podaÄ‡ wzglÄ™dnÄ… poniewaÅ¼ teraz wystarczy zmieniÄ‡ rozmiary okna w jednym miejscu i wszystko siÄ™ dostosuje
 	while (window.isOpen())
 	{
-		//Obs³uga zdarzeñ takich jak zamkniêcie gry, lub naciœniêcie klawisza
+		//ObsÅ‚uga zdarzeÅ„ takich jak zamkniÄ™cie gry, lub naciÅ›niÄ™cie klawisza
 		sf::Event windowEvent;
 		while (window.pollEvent(windowEvent))
 		{
-			//obs³uga wyjœcia z gry przez zamkniêcie okna lub naciœniêcie ESC
+			//obsÅ‚uga wyjÅ›cia z gry przez zamkniÄ™cie okna lub naciÅ›niÄ™cie ESC
 			if(windowEvent.type == sf::Event::Closed || sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
 			{
 				window.close();
 			}
-			//obs³uga przejœcia w górê przy u¿yciu klawisza W
+			//obsÅ‚uga przejÅ›cia w gÃ³rÄ™ przy uÅ¼yciu klawisza W
 			if (windowEvent.type == sf::Event::KeyPressed && (windowEvent.key.code == sf::Keyboard::Up || windowEvent.key.code == sf::Keyboard::W))
 			{
 				menu.MoveUp();
 			}
-			//obs³uga przejœcia w dó³ przy u¿yciu klawisza S
+			//obsÅ‚uga przejÅ›cia w dÃ³Å‚ przy uÅ¼yciu klawisza S
 			if (windowEvent.type == sf::Event::KeyPressed && (windowEvent.key.code == sf::Keyboard::Down || windowEvent.key.code == sf::Keyboard::S))
 			{
 				menu.MoveDown();
 			}
-			//Akceptacja wyboru na którym jest obecnie u¿ytkownik
+			//Akceptacja wyboru na ktÃ³rym jest obecnie uÅ¼ytkownik
 			if (windowEvent.type == sf::Event::KeyReleased && windowEvent.key.code == sf::Keyboard::Enter)
 			{
 				switch (menu.getPressedItem())
@@ -144,18 +144,18 @@ int menu(sf::RenderWindow &window,fstream &scores)
 				case 0: // START - wraca do main
 					return 0;
 					break;
-				case 1: // BEST SCORE - wywo³anie funkcji score
+				case 1: // BEST SCORE - wywoÅ‚anie funkcji score
 					score(window,scores,menu);
 					break;
-				case 2: // EXIT - zamkniêcie gry
+				case 2: // EXIT - zamkniÄ™cie gry
 					window.close();
 				}
 				break;
 			}
 		}
-		//Wyœwietlanie rzeczy na ekran (na ekranie wyœwietlane s¹ jedynie elementy znajduj¹ce siê pomiêdzy clear i display)
+		//WyÅ›wietlanie rzeczy na ekran (na ekranie wyÅ›wietlane sÄ… jedynie elementy znajdujÄ…ce siÄ™ pomiÄ™dzy clear i display)
 		window.clear(sf::Color::White);
-		//odwo³anie siê do w³aœciwoœci klasy menu (definicja klasy i w³aœciwoœci w oddzielnym pliku)
+		//odwoÅ‚anie siÄ™ do wÅ‚aÅ›ciwoÅ›ci klasy menu (definicja klasy i wÅ‚aÅ›ciwoÅ›ci w oddzielnym pliku)
 		menu.draw(window); 
 		window.display();
 	}
@@ -209,21 +209,21 @@ int main()
 	sf::VideoMode desktopMode = sf::VideoMode::getDesktopMode();
 	sf::RenderWindow window{ sf::VideoMode(800, 600, desktopMode.bitsPerPixel), "Dinozaur" };
 
-	//!dziêki temu sf::Event::KeyPressed bêdzie wykonywa³o siê tylko raz na wciœniêcie klawisza!
+	//!dziÄ™ki temu sf::Event::KeyPressed bÄ™dzie wykonywaÅ‚o siÄ™ tylko raz na wciÅ›niÄ™cie klawisza!
 	window.setKeyRepeatEnabled(false);
 
 	//utworzenie uchwytu do otwarcia pliku
 	fstream scores;
 
-	//uruchomienie funkcji menu wyœwietlaj¹cej menu gry
+	//uruchomienie funkcji menu wyÅ›wietlajÄ…cej menu gry
 	menuidentifier:
 	menu(window,scores);
 
-	//utworzenie sprite dinozaura oraz utworzenie tekstury i za³adowanie jej z pliku (³adowanie tekstury z obs³ug¹ b³êdu)
+	//utworzenie sprite dinozaura oraz utworzenie tekstury i zaÅ‚adowanie jej z pliku (Å‚adowanie tekstury z obsÅ‚ugÄ… bÅ‚Ä™du)
 	sf::Texture dino_texture;
 	if (!dino_texture.loadFromFile("./textures/almighty_dragon.png"))
 		return EXIT_FAILURE;
-	//sprawia, ¿e tekstury s¹ wyg³adzone? nw czy to coœ daje ale zawsze spoko
+	//sprawia, Å¼e tekstury sÄ… wygÅ‚adzone? nw czy to coÅ› daje ale zawsze spoko
 	dino_texture.setSmooth(true);
 	sf::Sprite dino(dino_texture);
 	//Origin - ustawienie punktu centralnego sprite'a
@@ -232,7 +232,7 @@ int main()
 		dino.setPosition(window.getSize().x / 10, 500);
 
 
-	//t³o gry
+	//tÅ‚o gry
 	sf::Texture backgroundtxt1;
 		backgroundtxt1.loadFromFile("./textures/background1.jpg");
 		backgroundtxt1.setSmooth(true);
@@ -241,7 +241,7 @@ int main()
 		backgroundtxt2.setSmooth(true);
 	sf::Sprite backgroundSprite(backgroundtxt1);
 
-	//zegar animacji i naliczania punktów
+	//zegar animacji i naliczania punktÃ³w
 	sf::Clock t0;
 	sf::Clock score_clock;
 	sf::Clock animation_time;
@@ -268,17 +268,21 @@ int main()
 	//podwojny krzak
 	obstacle bush4(double_bush_txt, 820);
 
+	//ptaszor
 	obstacle ptaszor(ptaszortxt, 830);
 	ptaszor.obstacleSprite.setPosition(820, 410);
 
 	
 
-	//u¿yte przy obs³udze skakania
+	//uÅ¼yte przy obsÅ‚udze skakania
 	bool is_jump = false;
 	bool on_ground = true;
 	bool is_bending = false;
 
-	//¯ycia dinozaura
+	//predkosc poruszania sie przeszkod
+	float speed = 0.7f;
+
+	//ï¿½ycia dinozaura
 	sf::Text healthText;
 	sf::Font healthFont;
 	int health = 3;
@@ -314,11 +318,11 @@ int main()
 		topScores[i] = stoi("2");
 	}
 
-	//g³ówna pêtla programu
+	//gÅ‚Ã³wna pÄ™tla programu
 	while (window.isOpen())
 	{
 
-		//animacja biegn¹cego dinozaura oraz zmiana t³a gry
+		//animacja biegnÄ…cego dinozaura oraz zmiana tÅ‚a gry
 		if (animation_time.getElapsedTime().asSeconds() >= 0.1f)
 		{
 			dino.setTextureRect({ rectPointer * dino_animation,0,rectWidth,rectHeight });
@@ -336,7 +340,7 @@ int main()
 				animation = 0;
 		}
 
-		//obs³uga eventów
+		//obsÅ‚uga eventÃ³w
 		sf::Event windowEvent;
 		while (window.pollEvent(windowEvent))
 		{
@@ -385,24 +389,24 @@ int main()
 		}
 		jump(dino, is_jump, on_ground,window);
 
-		//nowa przeszkoda pojawi siê jesli poprzednia zniknie
+		//nowa przeszkoda pojawi siÄ™ jesli poprzednia zniknie
 		if (!((bush.obstacleSprite.getPosition().x > -44) && (bush.obstacleSprite.getPosition().x < 800)) && !((ptaszor.obstacleSprite.getPosition().x > -60) && (ptaszor.obstacleSprite.getPosition().x < 800)))
 		{
-			bush4.move(0.55, dino, health);
+			bush4.move(speed, dino, health);
 		}
 		if (!((bush4.obstacleSprite.getPosition().x > -120) && (bush4.obstacleSprite.getPosition().x < 800)) && !((ptaszor.obstacleSprite.getPosition().x > -60) && (ptaszor.obstacleSprite.getPosition().x < 800)))
 		{
-			bush.move(0.55, dino, health);
+			bush.move(speed, dino, health);
 		}
 		if (!((bush4.obstacleSprite.getPosition().x > -120) && (bush4.obstacleSprite.getPosition().x < 800)) && !((bush.obstacleSprite.getPosition().x > -44) && (bush.obstacleSprite.getPosition().x < 800)))
 		{
-			ptaszor.move(0.55, dino, health);
+			ptaszor.move(speed, dino, health);
 		}
 		//bush.move(0.55, dino, health);
 		//bush2.move(0.55, dino, health);
 		//bush3.move(0.55, dino, health);
 		//bush4.move(0.55, dino, health);
-		//podanie koloru w window.clear() sprawia, ¿e ten kolor staje siê kolorem t³a
+		//podanie koloru w window.clear() sprawia, Å¼e ten kolor staje siÄ™ kolorem tÅ‚a
 		window.clear(sf::Color::White);
 		window.draw(backgroundSprite);
 		bush.draw(window);
@@ -416,13 +420,13 @@ int main()
 		
 		if (Collision::PixelPerfectTest(dino,bush.obstacleSprite))
 		{
-			cout << "Collison!" << endl;
+			std::cout << "speed1 = " << speed << " " << "Collison!" << std::endl;
 			
 
 		}
 		else if (Collision::PixelPerfectTest(dino, bush4.obstacleSprite))
 		{
-			cout << "Collison!" << endl;
+			std::cout << "speed1 = " << speed << " " << "Collison!" << std::endl;
 			
 		}
 		/*else if (Collision::PixelPerfectTest(dino, bush3.obstacleSprite))
@@ -432,24 +436,31 @@ int main()
 		}*/
 		else if (Collision::PixelPerfectTest(dino, ptaszor.obstacleSprite))
 		{
-			cout << "Collison!" << endl;
+			std::cout << "speed1 = " << speed << " " << "Collison!" << std::endl;
+			//cout << "Collison!" << endl;
 
 		}
 		else
 		{
-			cout << "No collision!" << endl;
+			std::cout << "speed1 = " << speed << " " << "No Collison!" << std::endl;
 			topScores[0];
 		}
 		
-		//wyœwietlanie ¿yæka
+		//wyÅ›wietlanie Å¼yÄ‡ka
 		if (health >= 1)
 		{
 			healthText.setString(to_string(health));
 			window.draw(healthText);
-			//naliczanie punktów
+			//naliczanie punktÃ³w
 			player_score = score_clock.getElapsedTime().asSeconds();
 			scoreText.setString(to_string(player_score));
 			window.draw(scoreText);
+			float temp = player_score;
+
+			//uzaleznienie predkosci od czasu
+			temp = temp * 0.002f; //o ile zwieksza przyrasta predkosc co sekunde, teraz 0.002
+			speed = 0.7f + temp;
+			
 		}
 		else
 		{
