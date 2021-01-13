@@ -336,7 +336,7 @@ int main()
 				is_bending = true;
 				if (!dino_texture.loadFromFile("./textures/almighty_dragon_bending.png"))
 					return EXIT_FAILURE;
-				dino.setOrigin(22.5f, 22.0f);
+				dino.setOrigin(22.5f, 49.0f);
 				dino.setTextureRect({ 0,0,78,49 });
 
 				if (t0.getElapsedTime().asSeconds() >= 0.1f)
