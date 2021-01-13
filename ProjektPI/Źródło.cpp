@@ -250,6 +250,10 @@ int main()
 	int animation = 0;
 	int dino_animation = 0;
 
+	int rectPointer = 55;
+	int rectWidth = 55;
+	int rectHeight = 60;
+
 	//utworzenie przeszkody
 	string bushtxt= "./textures/bush.png";
 	string double_bush_txt = "./textures/double_bush.png";
@@ -313,10 +317,11 @@ int main()
 	//g³ówna pêtla programu
 	while (window.isOpen())
 	{
+
 		//animacja biegn¹cego dinozaura oraz zmiana t³a gry
-		if (animation_time.getElapsedTime().asSeconds() >= 0.1f && !is_bending)
+		if (animation_time.getElapsedTime().asSeconds() >= 0.1f)
 		{
-			dino.setTextureRect({ 55 * dino_animation,0,55,60 });
+			dino.setTextureRect({ rectPointer * dino_animation,0,rectWidth,rectHeight });
 			dino_animation++;
 			if (dino_animation == 4)
 				dino_animation = 0;
@@ -330,6 +335,7 @@ int main()
 			if (animation == 4)
 				animation = 0;
 		}
+
 		//obs³uga eventów
 		sf::Event windowEvent;
 		while (window.pollEvent(windowEvent))
@@ -360,7 +366,10 @@ int main()
 				if (!dino_texture.loadFromFile("./textures/almighty_dragon_bending.png"))
 					return EXIT_FAILURE;
 				dino.setOrigin(22.5f, 49.0f);
-				dino.setTextureRect({ 0,0,78,49 });				
+				rectPointer = 78;
+				rectWidth = 78;
+				rectHeight = 49;
+				dino.setTextureRect({ 78 * dino_animation,0,78,49 });				
 			}
 			if (windowEvent.type == sf::Event::KeyReleased && (windowEvent.key.code == sf::Keyboard::S || windowEvent.key.code == sf::Keyboard::Down))
 			{
@@ -368,6 +377,9 @@ int main()
 				if (!dino_texture.loadFromFile("./textures/almighty_dragon.png"))
 					return EXIT_FAILURE;
 				dino.setOrigin(22.5f, 58.5f);
+				rectPointer = 55;
+				rectWidth = 55;
+				rectHeight = 60;
 				dino.setTextureRect({ 55 * dino_animation,0,55,60 });
 			}
 		}
