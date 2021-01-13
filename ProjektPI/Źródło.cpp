@@ -226,7 +226,7 @@ int main()
 	//sprawia, ¿e tekstury s¹ wyg³adzone? nw czy to coœ daje ale zawsze spoko
 	dino_texture.setSmooth(true);
 	sf::Sprite dino(dino_texture);
-	//Origin - ustawienie cpunktu centralnego sprite'a
+	//Origin - ustawienie punktu centralnego sprite'a
 	dino.setOrigin(22.5f, 58.5f);
 		dino.setTextureRect({ 0,0,55,60 });
 		dino.setPosition(window.getSize().x / 10, 500);
@@ -241,12 +241,14 @@ int main()
 		backgroundtxt2.setSmooth(true);
 	sf::Sprite backgroundSprite(backgroundtxt1);
 
-	//zegar animacji i do naliczania punktów
+	//zegar animacji i naliczania punktów
 	sf::Clock t0;
 	sf::Clock score_clock;
+	sf::Clock animation_time;
 
 	//iterator animacji
 	int animation = 0;
+	int dino_animation = 0;
 
 	//utworzenie przeszkody
 	string bushtxt= "./textures/bush.png";
@@ -307,9 +309,16 @@ int main()
 	while (window.isOpen())
 	{
 		//animacja biegn¹cego dinozaura oraz zmiana t³a gry
+		if (animation_time.getElapsedTime().asSeconds() >= 0.1f && !is_bending)
+		{
+			dino.setTextureRect({ 55 * dino_animation,0,55,60 });
+			dino_animation++;
+			if (dino_animation == 4)
+				dino_animation = 0;
+			animation_time.restart();
+		}
 		if (t0.getElapsedTime().asSeconds() >= 0.1f)
 		{
-			//dino.setTextureRect({ 55 * animation,0,55,60 });
 			(animation % 2) ? backgroundSprite.setTexture(backgroundtxt2) : backgroundSprite.setTexture(backgroundtxt1);
 			animation++;
 			t0.restart();
@@ -346,28 +355,15 @@ int main()
 				if (!dino_texture.loadFromFile("./textures/almighty_dragon_bending.png"))
 					return EXIT_FAILURE;
 				dino.setOrigin(22.5f, 49.0f);
-				dino.setTextureRect({ 0,0,78,49 });
-
-				if (t0.getElapsedTime().asSeconds() >= 0.1f)
-				{
-					dino.setTextureRect({ 55 * animation,0,78,49 });
-				}
-				
+				dino.setTextureRect({ 0,0,78,49 });				
 			}
-			if (!(sf::Keyboard::isKeyPressed(sf::Keyboard::Down) || sf::Keyboard::isKeyPressed(sf::Keyboard::S)))
+			if (windowEvent.type == sf::Event::KeyReleased && (windowEvent.key.code == sf::Keyboard::S || windowEvent.key.code == sf::Keyboard::Down))
 			{
 				is_bending = false;
-			}
-			if (!is_bending)
-			{
 				if (!dino_texture.loadFromFile("./textures/almighty_dragon.png"))
 					return EXIT_FAILURE;
 				dino.setOrigin(22.5f, 58.5f);
-				dino.setTextureRect({ 0,0,55,60 });
-				if (t0.getElapsedTime().asSeconds() >= 0.1f)
-				{
-					dino.setTextureRect({ 55 * animation,0,55,60 });
-				}
+				dino.setTextureRect({ 55 * dino_animation,0,55,60 });
 			}
 		}
 		jump(dino, is_jump, on_ground,window);
@@ -381,10 +377,6 @@ int main()
 		{
 			bush.move(0.55, dino, health);
 		}
-		//bush.move(0.55, dino, health);
-		//bush2.move(0.55, dino, health);
-		//bush3.move(0.55, dino, health);
-		//bush4.move(0.55, dino, health);
 		//podanie koloru w window.clear() sprawia, ¿e ten kolor staje siê kolorem t³a
 		window.clear(sf::Color::White);
 		window.draw(backgroundSprite);
@@ -407,11 +399,6 @@ int main()
 			cout << "Collison!" << endl;
 			
 		}
-		/*else if (Collision::PixelPerfectTest(dino, bush3.obstacleSprite))
-		{
-			cout << "Collison!" << endl;
-			
-		}*/
 		else
 		{
 			cout << "No collision!" << endl;
