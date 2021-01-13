@@ -262,15 +262,17 @@ int main()
 	//podwojny krzak
 	obstacle bush4(double_bush_txt, 820);
 
+	//ptaszor
 	obstacle ptaszor(ptaszortxt, 830);
 	ptaszor.obstacleSprite.setPosition(820, 410);
-
-	
 
 	//u¿yte przy obs³udze skakania
 	bool is_jump = false;
 	bool on_ground = true;
 	bool is_bending = false;
+
+	//predkosc poruszania sie przeszkod
+	float speed = 0.7f;
 
 	//¯ycia dinozaura
 	sf::Text healthText;
@@ -355,7 +357,7 @@ int main()
 
 				if (t0.getElapsedTime().asSeconds() >= 0.1f)
 				{
-					dino.setTextureRect({ 55 * animation,0,78,49 });
+					//dino.setTextureRect({ 55 * animation,0,78,49 });
 				}
 				
 			}
@@ -380,15 +382,15 @@ int main()
 		//nowa przeszkoda pojawi siê jesli poprzednia zniknie
 		if (!((bush.obstacleSprite.getPosition().x > -44) && (bush.obstacleSprite.getPosition().x < 800)) && !((ptaszor.obstacleSprite.getPosition().x > -60) && (ptaszor.obstacleSprite.getPosition().x < 800)))
 		{
-			bush4.move(0.55, dino, health);
+			bush4.move(speed, dino, health);
 		}
 		if (!((bush4.obstacleSprite.getPosition().x > -120) && (bush4.obstacleSprite.getPosition().x < 800)) && !((ptaszor.obstacleSprite.getPosition().x > -60) && (ptaszor.obstacleSprite.getPosition().x < 800)))
 		{
-			bush.move(0.55, dino, health);
+			bush.move(speed, dino, health);
 		}
 		if (!((bush4.obstacleSprite.getPosition().x > -120) && (bush4.obstacleSprite.getPosition().x < 800)) && !((bush.obstacleSprite.getPosition().x > -44) && (bush.obstacleSprite.getPosition().x < 800)))
 		{
-			ptaszor.move(0.55, dino, health);
+			ptaszor.move(speed, dino, health);
 		}
 		//bush.move(0.55, dino, health);
 		//bush2.move(0.55, dino, health);
@@ -408,13 +410,13 @@ int main()
 		
 		if (Collision::PixelPerfectTest(dino,bush.obstacleSprite))
 		{
-			cout << "Collison!" << endl;
+			std::cout << "speed1 = " << speed << " " << "Collison!" << std::endl;
 			
 
 		}
 		else if (Collision::PixelPerfectTest(dino, bush4.obstacleSprite))
 		{
-			cout << "Collison!" << endl;
+			std::cout << "speed1 = " << speed << " " << "Collison!" << std::endl;
 			
 		}
 		/*else if (Collision::PixelPerfectTest(dino, bush3.obstacleSprite))
@@ -424,15 +426,18 @@ int main()
 		}*/
 		else if (Collision::PixelPerfectTest(dino, ptaszor.obstacleSprite))
 		{
-			cout << "Collison!" << endl;
+			std::cout << "speed1 = " << speed << " " << "Collison!" << std::endl;
+			//cout << "Collison!" << endl;
 
 		}
 		else
 		{
-			cout << "No collision!" << endl;
+			std::cout << "speed1 = " << speed << " " << "No Collison!" << std::endl;
 			topScores[0];
 		}
 		
+		
+
 		//wyœwietlanie ¿yæka
 		if (health >= 1)
 		{
@@ -442,6 +447,12 @@ int main()
 			player_score = score_clock.getElapsedTime().asSeconds();
 			scoreText.setString(to_string(player_score));
 			window.draw(scoreText);
+			float temp = player_score;
+
+			//uzaleznienie predkosci od czasu
+			temp = temp * 0.002f; //o ile zwieksza przyrasta predkosc co sekunde, teraz 0.002
+			speed = 0.7f + temp;
+			
 		}
 		else
 		{
