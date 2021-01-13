@@ -32,7 +32,7 @@ public:
 		obstacleSprite.setPosition(obstacleSprite.getPosition().x - speed,obstacleSprite.getPosition().y);
 
 		//ustawienie nowej losowej pozycji po prawej stronie ekranu gdy przeszkoda zniknie z lewej storny ekranu
-		if(obstacleSprite.getPosition().x<-44) obstacleSprite.setPosition(rand()%1000 + 800, obstacleSprite.getPosition().y);
+		if(obstacleSprite.getPosition().x<-120) obstacleSprite.setPosition(rand()%1000 + 800, obstacleSprite.getPosition().y);
 
 		//os³uga kolizji, wykona siê gdy dwa sprite'y siê zetkn¹ i gdy czas nieœmiertelnoœci bêdzie wiêkszy ni¿ 1 sekunda (zabezpieczenie przed setkami wykonañ podczas przechodzenia przez przeszkode)
 		
@@ -161,6 +161,8 @@ int menu(sf::RenderWindow &window,fstream &scores)
 	}
 }
 
+
+//funkcja skakania
 int jump(sf::Sprite &dino, bool& is_jump, bool& on_ground, sf::RenderWindow& window)
 {
 
@@ -190,7 +192,7 @@ int jump(sf::Sprite &dino, bool& is_jump, bool& on_ground, sf::RenderWindow& win
 		on_ground = false;
 	}
 	//limit wysokosci dla skoku
-	if (dino.getPosition().y <= 400)
+	if (dino.getPosition().y <= 380)
 	{
 		is_jump = false;
 	}
@@ -248,9 +250,16 @@ int main()
 
 	//utworzenie przeszkody
 	string bushtxt= "./textures/bush.png";
+	string double_bush_txt = "./textures/double_bush.png";
+
+	//pojedynczy krzak
 	obstacle bush(bushtxt, 500);
-	obstacle bush2(bushtxt, 800);
-	obstacle bush3(bushtxt, 650);
+
+	//obstacle bush2(bushtxt, 800);
+	//obstacle bush3(bushtxt, 650);
+
+	//podwojny krzak
+	obstacle bush4(double_bush_txt, 820);
 	
 
 	//u¿yte przy obs³udze skakania
@@ -336,7 +345,7 @@ int main()
 				is_bending = true;
 				if (!dino_texture.loadFromFile("./textures/almighty_dragon_bending.png"))
 					return EXIT_FAILURE;
-				dino.setOrigin(22.5f, 48.5f);
+				dino.setOrigin(22.5f, 49.0f);
 				dino.setTextureRect({ 0,0,78,49 });
 
 				if (t0.getElapsedTime().asSeconds() >= 0.1f)
@@ -363,15 +372,26 @@ int main()
 		}
 		jump(dino, is_jump, on_ground,window);
 
-		bush.move(0.55, dino, health);
-		bush2.move(0.55, dino, health);
-		bush3.move(0.55, dino, health);
+		//nowa przeszkoda pojawi siê jesli poprzednia zniknie
+		if (!((bush.obstacleSprite.getPosition().x > -44) && (bush.obstacleSprite.getPosition().x < 800)))
+		{
+			bush4.move(0.55, dino, health);
+		}
+		if (!((bush4.obstacleSprite.getPosition().x > -120) && (bush4.obstacleSprite.getPosition().x < 800)))
+		{
+			bush.move(0.55, dino, health);
+		}
+		//bush.move(0.55, dino, health);
+		//bush2.move(0.55, dino, health);
+		//bush3.move(0.55, dino, health);
+		//bush4.move(0.55, dino, health);
 		//podanie koloru w window.clear() sprawia, ¿e ten kolor staje siê kolorem t³a
 		window.clear(sf::Color::White);
 		window.draw(backgroundSprite);
 		bush.draw(window);
-		bush2.draw(window);
-		bush3.draw(window);
+		//bush2.draw(window);
+		//bush3.draw(window);
+		bush4.draw(window);
 		window.draw(dino);
 		
 		//Proba detekcji kolizji pixelowej
@@ -382,16 +402,16 @@ int main()
 			
 
 		}
-		else if (Collision::PixelPerfectTest(dino, bush2.obstacleSprite))
+		else if (Collision::PixelPerfectTest(dino, bush4.obstacleSprite))
 		{
 			cout << "Collison!" << endl;
 			
 		}
-		else if (Collision::PixelPerfectTest(dino, bush3.obstacleSprite))
+		/*else if (Collision::PixelPerfectTest(dino, bush3.obstacleSprite))
 		{
 			cout << "Collison!" << endl;
 			
-		}
+		}*/
 		else
 		{
 			cout << "No collision!" << endl;
