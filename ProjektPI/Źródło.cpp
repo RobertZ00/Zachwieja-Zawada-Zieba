@@ -402,16 +402,16 @@ int main()
 			
 
 		}
-		else if (Collision::PixelPerfectTest(dino, bush2.obstacleSprite))
+		else if (Collision::PixelPerfectTest(dino, bush4.obstacleSprite))
 		{
 			cout << "Collison!" << endl;
 			
 		}
-		else if (Collision::PixelPerfectTest(dino, bush3.obstacleSprite))
+		/*else if (Collision::PixelPerfectTest(dino, bush3.obstacleSprite))
 		{
 			cout << "Collison!" << endl;
 			
-		}
+		}*/
 		else
 		{
 			cout << "No collision!" << endl;
