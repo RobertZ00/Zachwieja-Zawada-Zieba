@@ -251,15 +251,20 @@ int main()
 	//utworzenie przeszkody
 	string bushtxt= "./textures/bush.png";
 	string double_bush_txt = "./textures/double_bush.png";
+	string ptaszortxt = "./textures/ptaszor.png";
 
 	//pojedynczy krzak
-	obstacle bush(bushtxt, 500);
+	obstacle bush(bushtxt, 750);
 
 	//obstacle bush2(bushtxt, 800);
 	//obstacle bush3(bushtxt, 650);
 
 	//podwojny krzak
 	obstacle bush4(double_bush_txt, 820);
+
+	obstacle ptaszor(ptaszortxt, 830);
+	ptaszor.obstacleSprite.setPosition(820, 410);
+
 	
 
 	//u¿yte przy obs³udze skakania
@@ -373,13 +378,17 @@ int main()
 		jump(dino, is_jump, on_ground,window);
 
 		//nowa przeszkoda pojawi siê jesli poprzednia zniknie
-		if (!((bush.obstacleSprite.getPosition().x > -44) && (bush.obstacleSprite.getPosition().x < 800)))
+		if (!((bush.obstacleSprite.getPosition().x > -44) && (bush.obstacleSprite.getPosition().x < 800)) && !((ptaszor.obstacleSprite.getPosition().x > -60) && (ptaszor.obstacleSprite.getPosition().x < 800)))
 		{
 			bush4.move(0.55, dino, health);
 		}
-		if (!((bush4.obstacleSprite.getPosition().x > -120) && (bush4.obstacleSprite.getPosition().x < 800)))
+		if (!((bush4.obstacleSprite.getPosition().x > -120) && (bush4.obstacleSprite.getPosition().x < 800)) && !((ptaszor.obstacleSprite.getPosition().x > -60) && (ptaszor.obstacleSprite.getPosition().x < 800)))
 		{
 			bush.move(0.55, dino, health);
+		}
+		if (!((bush4.obstacleSprite.getPosition().x > -120) && (bush4.obstacleSprite.getPosition().x < 800)) && !((bush.obstacleSprite.getPosition().x > -44) && (bush.obstacleSprite.getPosition().x < 800)))
+		{
+			ptaszor.move(0.55, dino, health);
 		}
 		//bush.move(0.55, dino, health);
 		//bush2.move(0.55, dino, health);
@@ -392,6 +401,7 @@ int main()
 		//bush2.draw(window);
 		//bush3.draw(window);
 		bush4.draw(window);
+		ptaszor.draw(window);
 		window.draw(dino);
 		
 		//Proba detekcji kolizji pixelowej
@@ -412,6 +422,11 @@ int main()
 			cout << "Collison!" << endl;
 			
 		}*/
+		else if (Collision::PixelPerfectTest(dino, ptaszor.obstacleSprite))
+		{
+			cout << "Collison!" << endl;
+
+		}
 		else
 		{
 			cout << "No collision!" << endl;
