@@ -225,7 +225,7 @@ int main()
 	dino_texture.setSmooth(true);
 	sf::Sprite dino(dino_texture);
 	//Origin - ustawienie cpunktu centralnego sprite'a
-	dino.setOrigin(22.5f, 60.0f);
+	dino.setOrigin(22.5f, 58.5f);
 		dino.setTextureRect({ 0,0,55,60 });
 		dino.setPosition(window.getSize().x / 10, 500);
 
@@ -336,7 +336,7 @@ int main()
 				is_bending = true;
 				if (!dino_texture.loadFromFile("./textures/almighty_dragon_bending.png"))
 					return EXIT_FAILURE;
-				dino.setOrigin(22.5f, 22.0f);
+				dino.setOrigin(22.5f, 48.5f);
 				dino.setTextureRect({ 0,0,78,49 });
 
 				if (t0.getElapsedTime().asSeconds() >= 0.1f)
@@ -353,7 +353,7 @@ int main()
 			{
 				if (!dino_texture.loadFromFile("./textures/almighty_dragon.png"))
 					return EXIT_FAILURE;
-				dino.setOrigin(22.5f, 60.0f);
+				dino.setOrigin(22.5f, 58.5f);
 				dino.setTextureRect({ 0,0,55,60 });
 				if (t0.getElapsedTime().asSeconds() >= 0.1f)
 				{
