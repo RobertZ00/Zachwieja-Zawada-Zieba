@@ -5,9 +5,10 @@
 #include <fstream>
 #include <time.h>
 #include <string>
+#include <cstdlib>
 #include "menu.h"
 #include "scorescreen.h"
-#include "collision.h";
+#include "collision.h"
 
 using namespace std;
 
@@ -308,14 +309,11 @@ int main()
 
 	//wykorzystane do zapisywania wyniku do tabeli
 	scores.open("score.txt");
-	int topScores[3] = { 0,0,0 };
+	string topScores[3];
 	for (int i = 0; i < 3; i++)
 	{
-		string temp;
-		getline(scores, temp);
-		topScores[i] = stoi("2");
+		getline(scores, topScores[i]);
 	}
-
 	//główna pętla programu
 	while (window.isOpen())
 	{
@@ -438,7 +436,7 @@ int main()
 		}
 		else
 		{
-			std::cout << "speed1 = " << speed << " " << "No Collison!" << std::endl;
+			std::cout << "speed1 = " << speed << " " << "No Collison!" << topScores[0] << std::endl;
 			topScores[0];
 		}
 		
@@ -470,20 +468,22 @@ int main()
 			window.draw(healthText);
 			window.draw(scoreText);
 			on_ground = false;
-			if (total_score > topScores[0])
+			scores.close();
+			ofstream scoresfile("score.txt");
+			if (total_score > atoi(topScores[0].c_str()) && scoresfile.is_open())
 			{
-				scores << total_score << "\n" << topScores[0] << "\n" << topScores[1];
-				scores.close();
+				scoresfile << total_score << "\n" << topScores[0] << "\n" << topScores[1];
+				scoresfile.close();
 			}
-			else if (total_score > topScores[1])
+			else if (total_score > atoi(topScores[1].c_str()) && scoresfile.is_open())
 			{
-				scores << topScores[0] << "\n" << total_score << "\n" << topScores[1];
-				scores.close();
+				scoresfile << topScores[0] << "\n" << total_score << "\n" << topScores[1];
+				scoresfile.close();
 			}
-			else if (total_score > topScores[2])
+			else if (total_score > atoi(topScores[2].c_str()) && scoresfile.is_open())
 			{
-				scores << topScores[0] << "\n" << topScores[1] << "\n" << total_score;
-				scores.close();
+				scoresfile << topScores[0] << "\n" << topScores[1] << "\n" << total_score;
+				scoresfile.close();
 			}
 		}
 		window.display();
