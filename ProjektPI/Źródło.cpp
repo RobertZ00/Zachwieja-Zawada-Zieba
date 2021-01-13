@@ -17,7 +17,7 @@ class obstacle
 public:
 	sf::Sprite obstacleSprite;
 	sf::Clock immune;
-	//konstruktor klasy, trzeba podac link do tekstury oraz początkową pozycje przeszkody
+	//konstruktor klasy, trzeba podac link do tekstury oraz pocz�tkow� pozycje przeszkody
 	obstacle(string& texture_link,int basic_pos)
 	{
 		obstacleTexture.loadFromFile(texture_link);
@@ -25,16 +25,16 @@ public:
 		obstacleSprite.setPosition(basic_pos, 472);
 	}
 
-	//metoda klasy odpowiadająca za przemieszczanie się przeszkody oraz kolizję z dino
+	//metoda klasy odpowiadaj�ca za przemieszczanie si� przeszkody oraz kolizj� z dino
 	void move(float speed,sf::Sprite& dino,int& health)
 	{
-		//przemieszczanie się przeszkody
+		//przemieszczanie si� przeszkody
 		obstacleSprite.setPosition(obstacleSprite.getPosition().x - speed,obstacleSprite.getPosition().y);
 
 		//ustawienie nowej losowej pozycji po prawej stronie ekranu gdy przeszkoda zniknie z lewej storny ekranu
 		if(obstacleSprite.getPosition().x<-120) obstacleSprite.setPosition(rand()%1000 + 800, obstacleSprite.getPosition().y);
 
-		//osługa kolizji, wykona się gdy dwa sprite'y się zetkną i gdy czas nieśmiertelności będzie większy niż 1 sekunda (zabezpieczenie przed setkami wykonań podczas przechodzenia przez przeszkode)
+		//os�uga kolizji, wykona si� gdy dwa sprite'y si� zetkn� i gdy czas nie�miertelno�ci b�dzie wi�kszy ni� 1 sekunda (zabezpieczenie przed setkami wykona� podczas przechodzenia przez przeszkode)
 		
 		if (Collision::PixelPerfectTest(dino,obstacleSprite))
 		{
@@ -54,7 +54,7 @@ public:
 		*/
 	}
 
-	//metoda wyświetlania przeszkody na ekranie
+	//metoda wy�wietlania przeszkody na ekranie
 	void draw(sf::RenderWindow& window)
 	{
 		window.draw(obstacleSprite);
@@ -68,13 +68,13 @@ private:
 
 int score(sf::RenderWindow& window, fstream& scores,Menu& menu)
 {
-	//otwarcie pliku score.txt z opcją odczytu
+	//otwarcie pliku score.txt z opcj� odczytu
 	scores.open("score.txt");
 	if (scores.good())
 	{
 		string out;
 		string linia;
-		//zapisanie całego pliku do zmiennej linia
+		//zapisanie ca�ego pliku do zmiennej linia
 		for (int i = 0; i < 3; i++)
 		{
 			getline(scores, out);
@@ -82,29 +82,29 @@ int score(sf::RenderWindow& window, fstream& scores,Menu& menu)
 		}
 		//utworzenie obiektu klasy scorescreen
 		scorescreen scoresc(window.getSize().x,window.getSize().y,linia);
-		//pętla wyświetlająca ekran z najlepszymi wynikami
+		//p�tla wy�wietlaj�ca ekran z najlepszymi wynikami
 		while (window.isOpen())
 		{
 			menu.MoveUp();
-			//obsługa eventow
+			//obs�uga eventow
 			sf::Event windowEvent;
 			while (window.pollEvent(windowEvent))
 			{
-				//wyjście z gry ESC i zamknięcie okna
+				//wyj�cie z gry ESC i zamkni�cie okna
 				if (windowEvent.type == sf::Event::Closed || sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
 				{
 					window.close();
 				}
-				//obsługa entera (wyjście z tabeli wyników)
+				//obs�uga entera (wyj�cie z tabeli wynik�w)
 				if (windowEvent.type == sf::Event::KeyReleased && windowEvent.key.code == sf::Keyboard::Enter)
 				{
 					scores.close();
 					return 0;
 				}
 			}
-			//wyświetlanie 
+			//wy�wietlanie 
 			window.clear(sf::Color::White);
-			//odwołanie się do właściwości klasy scoresc(definicja właściwości tej klasy w oddzielnym pliku)
+			//odwo�anie si� do w�a�ciwo�ci klasy scoresc(definicja w�a�ciwo�ci tej klasy w oddzielnym pliku)
 			scoresc.draw(window);
 			window.display();
 		}
@@ -113,30 +113,30 @@ int score(sf::RenderWindow& window, fstream& scores,Menu& menu)
 
 int menu(sf::RenderWindow &window,fstream &scores)
 {
-	//utworzenie obiektu klasy MENU (w nawiasach są podane wartości dla konstruktora klasy)
-	Menu menu(window.getSize().x, window.getSize().y);//zamiast podawać stałą wartość lepiej podać względną ponieważ teraz wystarczy zmienić rozmiary okna w jednym miejscu i wszystko się dostosuje
+	//utworzenie obiektu klasy MENU (w nawiasach s� podane warto�ci dla konstruktora klasy)
+	Menu menu(window.getSize().x, window.getSize().y);//zamiast podawa� sta�� warto�� lepiej poda� wzgl�dn� poniewa� teraz wystarczy zmieni� rozmiary okna w jednym miejscu i wszystko si� dostosuje
 	while (window.isOpen())
 	{
-		//Obsługa zdarzeń takich jak zamknięcie gry, lub naciśnięcie klawisza
+		//Obs�uga zdarze� takich jak zamkni�cie gry, lub naci�ni�cie klawisza
 		sf::Event windowEvent;
 		while (window.pollEvent(windowEvent))
 		{
-			//obsługa wyjścia z gry przez zamknięcie okna lub naciśnięcie ESC
+			//obs�uga wyj�cia z gry przez zamkni�cie okna lub naci�ni�cie ESC
 			if(windowEvent.type == sf::Event::Closed || sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
 			{
 				window.close();
 			}
-			//obsługa przejścia w górę przy użyciu klawisza W
+			//obs�uga przej�cia w g�r� przy u�yciu klawisza W
 			if (windowEvent.type == sf::Event::KeyPressed && (windowEvent.key.code == sf::Keyboard::Up || windowEvent.key.code == sf::Keyboard::W))
 			{
 				menu.MoveUp();
 			}
-			//obsługa przejścia w dół przy użyciu klawisza S
+			//obs�uga przej�cia w d� przy u�yciu klawisza S
 			if (windowEvent.type == sf::Event::KeyPressed && (windowEvent.key.code == sf::Keyboard::Down || windowEvent.key.code == sf::Keyboard::S))
 			{
 				menu.MoveDown();
 			}
-			//Akceptacja wyboru na którym jest obecnie użytkownik
+			//Akceptacja wyboru na kt�rym jest obecnie u�ytkownik
 			if (windowEvent.type == sf::Event::KeyReleased && windowEvent.key.code == sf::Keyboard::Enter)
 			{
 				switch (menu.getPressedItem())
@@ -144,18 +144,18 @@ int menu(sf::RenderWindow &window,fstream &scores)
 				case 0: // START - wraca do main
 					return 0;
 					break;
-				case 1: // BEST SCORE - wywołanie funkcji score
+				case 1: // BEST SCORE - wywo�anie funkcji score
 					score(window,scores,menu);
 					break;
-				case 2: // EXIT - zamknięcie gry
+				case 2: // EXIT - zamkni�cie gry
 					window.close();
 				}
 				break;
 			}
 		}
-		//Wyświetlanie rzeczy na ekran (na ekranie wyświetlane są jedynie elementy znajdujące się pomiędzy clear i display)
+		//Wy�wietlanie rzeczy na ekran (na ekranie wy�wietlane s� jedynie elementy znajduj�ce si� pomi�dzy clear i display)
 		window.clear(sf::Color::White);
-		//odwołanie się do właściwości klasy menu (definicja klasy i właściwości w oddzielnym pliku)
+		//odwo�anie si� do w�a�ciwo�ci klasy menu (definicja klasy i w�a�ciwo�ci w oddzielnym pliku)
 		menu.draw(window); 
 		window.display();
 	}
@@ -272,9 +272,7 @@ int main()
 	obstacle ptaszor(ptaszortxt, 830);
 	ptaszor.obstacleSprite.setPosition(820, 410);
 
-	
-
-	//użyte przy obsłudze skakania
+	//użyte przy obs�udze skakania
 	bool is_jump = false;
 	bool on_ground = true;
 	bool is_bending = false;
@@ -282,7 +280,7 @@ int main()
 	//predkosc poruszania sie przeszkod
 	float speed = 0.7f;
 
-	//�ycia dinozaura
+	//życia dinozaura
 	sf::Text healthText;
 	sf::Font healthFont;
 	int health = 3;
@@ -321,7 +319,6 @@ int main()
 	//główna pętla programu
 	while (window.isOpen())
 	{
-
 		//animacja biegnącego dinozaura oraz zmiana tła gry
 		if (animation_time.getElapsedTime().asSeconds() >= 0.1f)
 		{
@@ -339,7 +336,6 @@ int main()
 			if (animation == 4)
 				animation = 0;
 		}
-
 		//obsługa eventów
 		sf::Event windowEvent;
 		while (window.pollEvent(windowEvent))
@@ -446,6 +442,8 @@ int main()
 			topScores[0];
 		}
 		
+		
+
 		//wyświetlanie żyćka
 		if (health >= 1)
 		{
