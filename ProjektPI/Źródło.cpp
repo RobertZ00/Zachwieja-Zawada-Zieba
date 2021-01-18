@@ -268,7 +268,7 @@ int main()
 	bool is_bending = false;
 
 	//predkosc poruszania sie przeszkod
-	float speed = 0.9f;
+	float speed = 0.7f;
 
 	//życia dinozaura
 	sf::Text healthText;
@@ -410,8 +410,7 @@ int main()
 		else if (Collision::PixelPerfectTest(dino, ptaszor.obstacleSprite))
 		{
 			std::cout << "speed1 = " << speed << " " << "Collison!" << std::endl;
-			//cout << "Collison!" << endl;
-
+			
 		}
 		else
 		{
@@ -434,7 +433,7 @@ int main()
 
 			//uzaleznienie predkosci od czasu
 			temp = temp * 0.002f; //o ile zwieksza przyrasta predkosc co sekunde, teraz 0.002
-			speed = 0.9f + temp;
+			speed = 0.7f + temp;
 			
 		}
 		else
