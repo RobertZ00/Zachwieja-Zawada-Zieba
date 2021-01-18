@@ -46,13 +46,6 @@ public:
 			cout << "dziala" << endl;
 			}
 		}
-
-		/*if (obstacleSprite.getGlobalBounds().intersects(dino.getGlobalBounds()) && immune.getElapsedTime().asSeconds() > 1)
-		{
-			health = health - 1;
-			immune.restart();
-		}
-		*/
 	}
 
 	//metoda wy�wietlania przeszkody na ekranie
@@ -197,7 +190,6 @@ int jump(sf::Sprite &dino, bool& is_jump, bool& on_ground, sf::RenderWindow& win
 	{
 		is_jump = false;
 	}
-	//std::cout << dino.getPosition().y << " " << is_jump << " " << on_ground << std::endl;
 
 	return 0;
 }
@@ -262,9 +254,6 @@ int main()
 
 	//pojedynczy krzak
 	obstacle bush(bushtxt, 750);
-
-	//obstacle bush2(bushtxt, 800);
-	//obstacle bush3(bushtxt, 650);
 
 	//podwojny krzak
 	obstacle bush4(double_bush_txt, 820);
@@ -396,16 +385,11 @@ int main()
 		{
 			ptaszor.move(speed, dino, health);
 		}
-		//bush.move(0.55, dino, health);
-		//bush2.move(0.55, dino, health);
-		//bush3.move(0.55, dino, health);
-		//bush4.move(0.55, dino, health);
+		
 		//podanie koloru w window.clear() sprawia, że ten kolor staje się kolorem tła
 		window.clear(sf::Color::White);
 		window.draw(backgroundSprite);
 		bush.draw(window);
-		//bush2.draw(window);
-		//bush3.draw(window);
 		bush4.draw(window);
 		ptaszor.draw(window);
 		window.draw(dino);
@@ -423,11 +407,6 @@ int main()
 			std::cout << "speed1 = " << speed << " " << "Collison!" << std::endl;
 			
 		}
-		/*else if (Collision::PixelPerfectTest(dino, bush3.obstacleSprite))
-		{
-			cout << "Collison!" << endl;
-			
-		}*/
 		else if (Collision::PixelPerfectTest(dino, ptaszor.obstacleSprite))
 		{
 			std::cout << "speed1 = " << speed << " " << "Collison!" << std::endl;
