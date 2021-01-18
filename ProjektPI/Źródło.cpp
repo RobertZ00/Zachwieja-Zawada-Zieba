@@ -32,7 +32,7 @@ public:
 		//przemieszczanie si� przeszkody
 		obstacleSprite.setPosition(obstacleSprite.getPosition().x - speed,obstacleSprite.getPosition().y);
 
-		//ustawienie nowej losowej pozycji po prawej stronie ekranu gdy przeszkoda zniknie z lewej storny ekranu
+		//ustawienie nowej losowej pozycji po prawej stronie ekranu gdy wywołana przeszkoda zniknie z lewej storny ekranu
 		if(obstacleSprite.getPosition().x<-120) obstacleSprite.setPosition(rand()%1000 + 800, obstacleSprite.getPosition().y);
 
 		//os�uga kolizji, wykona si� gdy dwa sprite'y si� zetkn� i gdy czas nie�miertelno�ci b�dzie wi�kszy ni� 1 sekunda (zabezpieczenie przed setkami wykona� podczas przechodzenia przez przeszkode)
@@ -268,7 +268,7 @@ int main()
 	bool is_bending = false;
 
 	//predkosc poruszania sie przeszkod
-	float speed = 0.7f;
+	float speed = 0.9f;
 
 	//życia dinozaura
 	sf::Text healthText;
@@ -434,7 +434,7 @@ int main()
 
 			//uzaleznienie predkosci od czasu
 			temp = temp * 0.002f; //o ile zwieksza przyrasta predkosc co sekunde, teraz 0.002
-			speed = 0.7f + temp;
+			speed = 0.9f + temp;
 			
 		}
 		else
